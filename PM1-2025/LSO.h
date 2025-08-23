@@ -54,4 +54,27 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
 //Modificar
 //Muestra
 //memorizacion previa
+void memorizacion_previa(Alumno *lista,int *cant, int *exito) {
+    FILE *fp;
+    Alumno aux;
+    fp = fopen("Alumnos.txt", "r");
+    if (fp == NULL) {
+        printf("Error: No se encontro el archivo 'Alumnos.txt'\n");
+    }
+    else{
+        while (feof(fp)==0) {
+        fscanf(fp, "%[^\n]", aux.codigo);
+        fscanf(fp, "%[^\n]", aux.apellido_nombre);
+        fscanf(fp, "%[^\n]", aux.mail);
+        fscanf(fp, "%d", &aux.nota);
+        fscanf(fp, "%[^\n]", aux.condicion);
+        Alta(&lista,aux,&cant,&exito);
+        *cant++;
+
+        printf("Cargado: %s\n", aux.apellido_nombre);
+    }
+
+    fclose(fp);
+
+}
 #endif // LSO_H_INCLUDED
