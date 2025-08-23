@@ -52,6 +52,7 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
 }
 //Baja
 //Modificar
+//Evocar
 //Muestra
 //memorizacion previa
 #endif // LSO_H_INCLUDED
