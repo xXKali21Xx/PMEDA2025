@@ -1,6 +1,8 @@
 #ifndef LSO_H_INCLUDED
 #define LSO_H_INCLUDED
 #include "string.h"
+#include "stdio.h"
+
 typedef struct{
     char nombre[80]; //contiene el apellido
     char mail[23];
@@ -97,7 +99,50 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
 
 }
 //Modificar
+int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
+    int pos = 0;
+    localizar(lista, cant, cod, exito, &pos);
+    if (*exito == 1) {
+        printf("Alumno encontrado: \n");
+        printf("Nombre: %s\n", lista[pos].nombre);
+        printf("Mail: %s\n", lista[pos].mail);
+        printf("Condicion: %s\n", lista[pos].condicion);
+        printf("Nota: %d\n", lista[pos].nota);
+
+        printf("Ingrese nuevo nombre: ");
+        getchar();
+        gets(lista[pos].nombre);
+
+        printf("Ingrese nuevo mail: ");
+        getchar();
+        gets(lista[pos].mail);
+
+        printf("Ingrese nueva condición: ");
+        getchar();
+        gets(lista[pos].condicion);
+
+        printf("Ingrese nueva nota: ");
+        scanf("%d", &lista[pos].nota);
+
+        *exito = 1;
+    } else {
+        *exito = 0;
+    }
+    return *exito;
+}
+
+
 //Evocar
+Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito) {
+    int pos = 0;
+    localizar(lista, cant, cod, exito, &pos);
+    if (*exito == 1) {
+        return &lista[pos];
+    } else {
+        return NULL;
+    }
+}
+
 //Muestra
 void muestra(Alumno lista[], int cant){
     int i = 0;
@@ -117,9 +162,9 @@ void muestra(Alumno lista[], int cant){
 }
 //memorizacion previa
 void memorizacion_previa(Alumno *lista,int *cant, int *exito) {
-    FILE *fp;
+    FILE *fp = fopen("Alumnos.txt", "r");
     Alumno aux;
-    fp = fopen("Alumnos.txt", "r");
+
     if (fp == NULL) {
         printf("Error: No se encontro el archivo 'Alumnos.txt'\n");
     }
@@ -131,10 +176,9 @@ void memorizacion_previa(Alumno *lista,int *cant, int *exito) {
         fscanf(fp, "%d", &aux.nota);
         fscanf(fp, "%[^\n]", aux.condicion);
         Alta(lista,aux,cant,exito);
-        (*cant)++;
     }
 
     fclose(fp);
-
+    }
 }
 #endif // LSO_H_INCLUDED

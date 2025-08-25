@@ -111,6 +111,3 @@ void limpiar_buffer() {
 
     return 0;
 }
-
-
-}
