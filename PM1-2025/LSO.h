@@ -54,6 +54,8 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
 //Baja
 int Baja(Alumno lista[], char x[], int *cant, int *exito){
     int pos;
+    int i;
+    int opcion = 0;
     if((*cant) == 0){
         (*exito) = -1; //no hay elementos en la lista
     }
@@ -61,8 +63,37 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
     if((*exito) == 2){
         (*exito) = 2; //el elemento no se encontro en la lista
     }else{
+        if((*exito) == 1){ //el elemento esta en la lista
+            printf("Nombre y Apellido: %s \n", lista[pos].nombre );
+            printf("Mail: %s \n", lista[pos].mail);
+            printf("Codigo Alumno: %s \n", lista[pos].codigo);
+            printf("Condicion: %s \n", lista[pos].codigo);
+            printf("Nota: %d \n", lista[pos].nota);
 
+            printf("------------------------------------------- \n"); //mostramos el elemento
+
+            printf("ingrese 1 si quiere borrar el elemento \n");
+            printf("ingrese 0 si NO quiere borrar el elemento \n"); // confirmacion de la baja
+            scanf("%d", &opcion);
+            while(opcion != 1 && opcion != 0){
+                printf("ERROR, ingrese un valor correcto \n");
+                printf("ingrese 1 si quiere borrar el elemento \n");
+                printf("ingrese 0 si NO quiere borrar el elemento \n");
+                scanf("%d", &opcion);
+            }
+            if(opcion == 1){ //en caso que si quiera borrarlo
+                for(i = 0; i < (*cant); i++){
+                    lista[i] = lista[i+1]; //suprimimos el elemento
+                }
+                (*exito) = 1; // se borro
+                (*cant)--; //decrementamos la cantidad total
+            }else{
+                (*exito) = 0; // no se borro
+            }
+        }
     }
+
+    return (*exito);
 
 }
 //Modificar
@@ -71,12 +102,17 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
 void muestra(Alumno lista[], int cant){
     int i = 0;
     while(i < cant){
-        printf("Nombre y Apellido: %s", lista[i].nombre );
-        printf("Mail: %s", lista[i].mail);
-        printf("Codigo Alumno: %s", lista[i].codigo);
-        printf("Condicion: %s", lista[i].codigo);
-        printf("Nota: %d", lista[i].nota);
+        printf("Nombre y Apellido: %s \n", lista[i].nombre );
+        printf("Mail: %s \n", lista[i].mail);
+        printf("Codigo Alumno: %s \n", lista[i].codigo);
+        printf("Condicion: %s \n", lista[i].codigo);
+        printf("Nota: %d \n", lista[i].nota);
         i++;
+        printf("------------------------------------------- \n");
+        if(i%5 == 0){
+            printf("Presiones enter para continuar... \n");
+            getchar();
+        }
     }
 }
 //memorizacion previa
