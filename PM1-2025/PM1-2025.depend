@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1756131005 source:c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\main.c
+	<stdio.h>
+	<stdlib.h>
+	"LSO.h"
+
+1756131878 c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\lso.h
+	"string.h"
+

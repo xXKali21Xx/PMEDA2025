@@ -1,6 +1,6 @@
 #ifndef LSO_H_INCLUDED
 #define LSO_H_INCLUDED
-
+#include "string.h"
 typedef struct{
     char nombre[80]; //contiene el apellido
     char mail[23];
@@ -10,16 +10,16 @@ typedef struct{
 }Alumno;
 
 //Localizar
-int localizar(Alumno lista[], int cant, char cod[], int *exito, int *pos){
+int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos){
     int i = 0;
     if(cant == 0){ //no hay elementos en la lista
         (*exito) = 0;
         (*pos) = 0;
     }else{
-        while(i < cant) && (strcmpi(lista.codigo,cod) < 0){ //mientras que no salga de la lista y el codigo sea menor compara
+        while((i < cant) && (strcmpi(lista[i].codigo,cod) < 0)){ //mientras que no salga de la lista y el codigo sea menor compara
             i++;
         }
-        if(i < cant) && (strcmpi(lista.codigo,cod) == 0){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
+        if((i < cant) && (strcmpi(lista[i].codigo,cod) == 0)){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
             (*exito) = 1; //se encontro
             (*pos) = i;
         }else{ //no se encontro
@@ -27,6 +27,7 @@ int localizar(Alumno lista[], int cant, char cod[], int *exito, int *pos){
             (*pos) = i; // posicion donde se puede insertar el elemento
         }
     }
+    return *exito;
 }
 //Alta
 int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
@@ -34,15 +35,14 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
     int i = 0;
     if((*cant) + 1 == 130){
         (*exito) = -1; // no hay epsacio
-        (*pos) = -1;
+        pos = -1;
     }
-    localizar(lista, cant, x.codigo, &exito, &pos);
+    localizar(lista, cant, x.codigo, exito, &pos);
     if((*exito) == 1){ //se encontro el elemento por lo tanto no se puede insertar
         (*exito) = 0;
     }
     if((*exito) == 2){ // no se encontro el elemento por lo tanto se puede insertar
-        i = (*cant)
-        for(i, pos < i, i--){
+        for(i = (*cant); pos < i; i--){
             lista[i] = lista[i-1]; //hace el corrimiento
         }
         lista[i] = x;
@@ -69,8 +69,8 @@ void memorizacion_previa(Alumno *lista,int *cant, int *exito) {
         fscanf(fp, "%[^\n]", aux.mail);
         fscanf(fp, "%d", &aux.nota);
         fscanf(fp, "%[^\n]", aux.condicion);
-        Alta(&lista,aux,&cant,&exito);
-        *cant++;
+        Alta(lista,aux,cant,exito);
+        (*cant)++;
     }
 
     fclose(fp);

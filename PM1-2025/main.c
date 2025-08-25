@@ -3,7 +3,7 @@
 #include "LSO.h"
 int main()
 {
-    Alumno *alumnoLSO = (Alumno*)malloc(sizeof(Alumno)*130); // LSO
+    Alumno alumnolso[130]; // LSO
     int cant = 0;
 
 void mostrar_menu() {
