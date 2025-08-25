@@ -49,11 +49,36 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
         (*exito) = 1;
         (*cant)++;
     }
+    return *exito;
 }
 //Baja
+int Baja(Alumno lista[], char x[], int *cant, int *exito){
+    int pos;
+    if((*cant) == 0){
+        (*exito) = -1; //no hay elementos en la lista
+    }
+    localizar(lista,cant,x,exito,&pos);
+    if((*exito) == 2){
+        (*exito) = 2; //el elemento no se encontro en la lista
+    }else{
+
+    }
+
+}
 //Modificar
 //Evocar
 //Muestra
+void muestra(Alumno lista[], int cant){
+    int i = 0;
+    while(i < cant){
+        printf("Nombre y Apellido: %s", lista[i].nombre );
+        printf("Mail: %s", lista[i].mail);
+        printf("Codigo Alumno: %s", lista[i].codigo);
+        printf("Condicion: %s", lista[i].codigo);
+        printf("Nota: %d", lista[i].nota);
+        i++;
+    }
+}
 //memorizacion previa
 void memorizacion_previa(Alumno *lista,int *cant, int *exito) {
     FILE *fp;
