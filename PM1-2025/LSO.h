@@ -12,7 +12,7 @@ typedef struct{
 }Alumno;
 //Funcion auxiliar
 
-Alumno Ingreso(Alumno *x){
+/*Alumno Ingreso(Alumno *x){
     printf("Ingrese el nombre y apellido del alumno \n");
     scanf(" %[^\n]",(*x).nombre);
     fflush(stdin);
@@ -28,7 +28,7 @@ Alumno Ingreso(Alumno *x){
     printf("Ingrese la nota del alumno \n");
     scanf("%d", &(*x).nota);
     fflush(stdin);
-}
+}*/
 //Localizar
 int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos){
     int i = 0;
@@ -36,10 +36,10 @@ int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos){
         (*exito) = 2;
         (*pos) = 0;
     }else{
-        while((i < cant) && (strcmp(lista[i].codigo,cod) < 0)){ //mientras que no salga de la lista y el codigo sea menor compara
+        while((i < cant) && (strcmpi(lista[i].codigo,cod) < 0)){ //mientras que no salga de la lista y el codigo sea menor compara
             i++;
         }
-        if((i < cant) && (strcmp(lista[i].codigo,cod) == 0)){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
+        if((i < cant) && (strcmpi(lista[i].codigo,cod) == 0)){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
             (*exito) = 1; //se encontro
             (*pos) = i;
         }else{ //no se encontro

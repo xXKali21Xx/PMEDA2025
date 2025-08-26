@@ -56,10 +56,29 @@ void limpiar_buffer() {
             case 2:
                 printf("\n--- INGRESAR NUEVO ALUMNO ---\n");
                 Alumno aux;
-                Ingreso(&aux);
+
+                printf("Ingrese el nombre y apellido del alumno \n");
+                scanf(" %[^\n]", aux.nombre);
+                fflush(stdin);
+                printf("Ingrese el mail del alumno \n");
+                scanf(" %[^\n]", aux.mail);
+                fflush(stdin);
+                printf("Ingrese el codigo del alumno\n");
+                scanf(" %[^\n]", aux.codigo);
+                fflush(stdin);
+                printf("Ingrese la condicion del alumno\n");
+                scanf(" %[^\n]", aux.condicion);
+                fflush(stdin);
+                printf("Ingrese la nota del alumno \n");
+                scanf("%d", &aux.nota);
+                fflush(stdin);
+
                 Alta(alumnoLSO,aux, &cant, &exito);
                // resultado = ingresar_alumno(&alumnoLSO);
-                if (resultado == 1) {
+               if(exito == -1){
+                printf("La lista esta llena \n");
+               }
+                if (exito == 1) {
                     printf("Alumno ingresado exitosamente\n");
                 } else {
                     printf("Error al ingresar el alumno\n");
@@ -67,6 +86,10 @@ void limpiar_buffer() {
                 break;
 
             case 3:
+                if(cant == 0){
+                    printf("no hay elementos en la lista \n");
+                    break;
+                }
                 printf("\n--- ELIMINAR ALUMNO ---\n");
                 printf("ingrese el codigo del alumno para eliminar\n");
                 scanf("%s", codigo);
@@ -79,6 +102,10 @@ void limpiar_buffer() {
                 break;
 
             case 4:
+                if(cant == 0){
+                    printf("no hay elementos en la lista \n");
+                    break;
+                }
                 printf("\n--- MODIFICAR ALUMNO ---\n");
                 printf("ingrese el codigo del alumno para modificar\n");
                 scanf("%s", codigo);
@@ -91,14 +118,23 @@ void limpiar_buffer() {
                 break;
 
             case 5:
+                if(cant == 0){
+                    printf("no hay elementos en la lista \n");
+                    break;
+                }
                 printf("\n--- CONSULTAR ALUMNO ---\n");
               //  resultado = consultar_alumno(&alumnoLSO);
+
                 if (resultado == 0) {
                     printf("Alumno no encontrado\n");
                 }
                 break;
 
             case 6:
+                if(cant == 0){
+                    printf("no hay elementos en la lista \n");
+                    break;
+                }
                 printf("\n--- MOSTRAR ESTRUCTURA COMPLETA ---\n");
                 muestra(alumnoLSO,cant);
                 break;
