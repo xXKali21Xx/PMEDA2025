@@ -14,14 +14,14 @@ typedef struct{
 //Localizar
 int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos){
     int i = 0;
-    if(cant == 0){ //no hay elementos en la lista
-        (*exito) = 0;
+    if(*cant == 0){ //no hay elementos en la lista
+        (*exito) = 2;
         (*pos) = 0;
     }else{
-        while((i < cant) && (strcmpi(lista[i].codigo,cod) < 0)){ //mientras que no salga de la lista y el codigo sea menor compara
+        while((i < cant) && (strcmp(lista[i].codigo,cod) < 0)){ //mientras que no salga de la lista y el codigo sea menor compara
             i++;
         }
-        if((i < cant) && (strcmpi(lista[i].codigo,cod) == 0)){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
+        if((i < cant) && (strcmp(lista[i].codigo,cod) == 0)){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
             (*exito) = 1; //se encontro
             (*pos) = i;
         }else{ //no se encontro
@@ -35,7 +35,7 @@ int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos){
 int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
     int pos = 0;
     int i = 0;
-    if((*cant) + 1 == 130){
+    if(*cant  >= 130){
         (*exito) = -1; // no hay epsacio
         pos = -1;
     }
@@ -44,10 +44,10 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
         (*exito) = 0;
     }
     if((*exito) == 2){ // no se encontro el elemento por lo tanto se puede insertar
-        for(i = (*cant); pos < i; i--){
+        for(i = (*cant); i > pos; i--){
             lista[i] = lista[i-1]; //hace el corrimiento
         }
-        lista[i] = x;
+        lista[pos] = x;
         (*exito) = 1;
         (*cant)++;
     }
@@ -62,6 +62,7 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
         (*exito) = -1; //no hay elementos en la lista
     }
     localizar(lista,cant,x,exito,&pos);
+
     if((*exito) == 2){
         (*exito) = 2; //el elemento no se encontro en la lista
     }else{
@@ -69,7 +70,7 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
             printf("Nombre y Apellido: %s \n", lista[pos].nombre );
             printf("Mail: %s \n", lista[pos].mail);
             printf("Codigo Alumno: %s \n", lista[pos].codigo);
-            printf("Condicion: %s \n", lista[pos].codigo);
+            printf("Condicion: %s \n", lista[pos].condicion);
             printf("Nota: %d \n", lista[pos].nota);
 
             printf("------------------------------------------- \n"); //mostramos el elemento
@@ -108,20 +109,17 @@ int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
         printf("Mail: %s\n", lista[pos].mail);
         printf("Condicion: %s\n", lista[pos].condicion);
         printf("Nota: %d\n", lista[pos].nota);
-
-        printf("Ingrese nuevo nombre: ");
         getchar();
-        gets(lista[pos].nombre);
-
-        printf("Ingrese nuevo mail: ");
+        printf("Ingrese nuevo nombre: \n");
+        scanf("%[^\n]s", lista[pos].nombre);
         getchar();
-        gets(lista[pos].mail);
-
-        printf("Ingrese nueva condición: ");
+        printf("Ingrese nuevo mail: \n");
+        scanf("%s", lista[pos].mail);
         getchar();
-        gets(lista[pos].condicion);
-
-        printf("Ingrese nueva nota: ");
+        printf("Ingrese nueva condicion: \n");
+        scanf("%s", lista[pos].condicion);
+        getchar();
+        printf("Ingrese nueva nota: \n");
         scanf("%d", &lista[pos].nota);
 
         *exito = 1;
@@ -150,7 +148,7 @@ void muestra(Alumno lista[], int cant){
         printf("Nombre y Apellido: %s \n", lista[i].nombre );
         printf("Mail: %s \n", lista[i].mail);
         printf("Codigo Alumno: %s \n", lista[i].codigo);
-        printf("Condicion: %s \n", lista[i].codigo);
+        printf("Condicion: %s \n", lista[i].condicion);
         printf("Nota: %d \n", lista[i].nota);
         i++;
         printf("------------------------------------------- \n");
@@ -160,25 +158,55 @@ void muestra(Alumno lista[], int cant){
         }
     }
 }
-//memorizacion previa
-void memorizacion_previa(Alumno *lista,int *cant, int *exito) {
-    FILE *fp = fopen("Alumnos.txt", "r");
-    Alumno aux;
 
-    if (fp == NULL) {
+//memorizacion previa
+int memorizacion_previa(Alumno *lista, int *cant, int *exito) {
+    FILE *fp;
+    Alumno aux;
+    int d = 1;
+    char buffer[256];
+
+    if ((fp = fopen("Alumnos.txt", "r")) == NULL) {
         printf("Error: No se encontro el archivo 'Alumnos.txt'\n");
+        *exito = 0;
+        return 0;
     }
-    else{
-        while (feof(fp)==0) {
-        fscanf(fp, "%[^\n]", aux.codigo);
-        fscanf(fp, "%[^\n]", aux.nombre);
-        fscanf(fp, "%[^\n]", aux.mail);
-        fscanf(fp, "%d", &aux.nota);
-        fscanf(fp, "%[^\n]", aux.condicion);
-        Alta(lista,aux,cant,exito);
+
+    while (fgets(buffer, sizeof(buffer), fp) != NULL) { //fgets: Lee una línea completa desde un archivo o entrada estándar, incluyendo el salto de línea si hay espacio.
+        buffer[strcspn(buffer, "\n")] = '\0';           //strcspn: Busca la primera aparición de cualquier carácter de un conjunto en una cadena. ejemplo para elimininar \n del fgets. atoi: Convierte una cadena de caracteres en un número entero
+        if (strlen(buffer) == 0) continue;              // Saltar líneas vacías
+        strncpy(aux.codigo, buffer, sizeof(aux.codigo) - 1);
+
+        if (fgets(buffer, sizeof(buffer), fp) == NULL) break;
+        buffer[strcspn(buffer, "\n")] = '\0';
+        strncpy(aux.nombre, buffer, sizeof(aux.nombre) - 1);
+
+        if (fgets(buffer, sizeof(buffer), fp) == NULL) break;
+        buffer[strcspn(buffer, "\n")] = '\0';
+        strncpy(aux.mail, buffer, sizeof(aux.mail) - 1);
+
+        if (fgets(buffer, sizeof(buffer), fp) == NULL) break;
+        aux.nota = atoi(buffer);
+
+        if (fgets(buffer, sizeof(buffer), fp) == NULL) break;
+        buffer[strcspn(buffer, "\n")] = '\0';
+        strncpy(aux.condicion, buffer, sizeof(aux.condicion) - 1);
+
+        printf("Cargando alumno: %d \n", d);
+        printf("Codigo: %s\n", aux.codigo);
+        printf("Nombre: %s\n", aux.nombre);
+        printf("Mail: %s\n", aux.mail);
+        printf("Nota: %d\n", aux.nota);
+        printf("Condicion: %s\n", aux.condicion);
+        printf("---\n");
+        d++;
+
+        Alta(lista, aux, cant, exito);
     }
 
     fclose(fp);
-    }
+    printf("Archivo cargado exitosamente. Total de alumnos: %d\n", *cant);
+    *exito = 1;
+    return 1;
 }
 #endif // LSO_H_INCLUDED

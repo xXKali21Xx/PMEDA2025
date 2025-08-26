@@ -3,8 +3,10 @@
 #include "LSO.h"
 int main()
 {
-    Alumno alumnolso[130]; // LSO
+    Alumno *alumnoLSO = (Alumno*)malloc(sizeof(Alumno)*130); // LSO
     int cant = 0;
+    int exito = 0;
+    char codigo[7];
 
 void mostrar_menu() {
     printf("\n========================================\n");
@@ -42,7 +44,8 @@ void limpiar_buffer() {
         switch(opcion) {
             case 1:
                 printf("\n--- MEMORIZACION PREVIA ---\n");
-               // resultado = memorizacion_previa(&alumnoLSO);
+                resultado = memorizacion_previa(alumnoLSO,&cant,&exito);
+                printf("Cantidad de alumnos cargados: %d\n",cant);
                 if (resultado == 1) {
                     printf("Archivo cargado exitosamente\n");
                 } else {
@@ -62,8 +65,10 @@ void limpiar_buffer() {
 
             case 3:
                 printf("\n--- ELIMINAR ALUMNO ---\n");
-               // resultado = eliminar_alumno(&alumnoLSO);
-                if (resultado == 1) {
+                printf("ingrese el codigo del alumno para eliminar\n");
+                scanf("%s", codigo);
+                Baja(alumnoLSO,codigo,&cant,&exito);
+                if (exito == 1) {
                     printf("Alumno eliminado exitosamente\n");
                 } else {
                     printf("Error al eliminar el alumno\n");
@@ -72,8 +77,10 @@ void limpiar_buffer() {
 
             case 4:
                 printf("\n--- MODIFICAR ALUMNO ---\n");
-              //  resultado = modificar_alumno(&alumnoLSO);
-                if (resultado == 1) {
+                printf("ingrese el codigo del alumno para modificar\n");
+                scanf("%s", codigo);
+                Modificar(alumnoLSO,&cant,codigo,&exito);
+                if (exito == 1) {
                     printf("Datos del alumno modificados exitosamente\n");
                 } else {
                     printf("Error al modificar al alumno\n");
@@ -90,7 +97,7 @@ void limpiar_buffer() {
 
             case 6:
                 printf("\n--- MOSTRAR ESTRUCTURA COMPLETA ---\n");
-               // mostrar_estructura(&alumnoLSO);
+                muestra(alumnoLSO,cant);
                 break;
 
             case 0:
