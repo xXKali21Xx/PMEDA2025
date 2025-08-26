@@ -5,8 +5,8 @@
 
 typedef struct{
     char nombre[80]; //contiene el apellido
-    char mail[23];
-    char codigo[7];
+    char mail[24];
+    char codigo[8];
     char condicion[10]; // 0 = Ausente , 1 = regular , 2 = promociona , 3 = Libre
     int nota;
 }Alumno;
@@ -36,10 +36,10 @@ int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos){
         (*exito) = 2;
         (*pos) = 0;
     }else{
-        while((i < cant) && (strcmpi(lista[i].codigo,cod) < 0)){ //mientras que no salga de la lista y el codigo sea menor compara
+        while((i < *cant) && (strcmpi(lista[i].codigo,cod) < 0)){ //mientras que no salga de la lista y el codigo sea menor compara
             i++;
         }
-        if((i < cant) && (strcmpi(lista[i].codigo,cod) == 0)){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
+        if((i < *cant) && (strcmpi(lista[i].codigo,cod) == 0)){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
             (*exito) = 1; //se encontro
             (*pos) = i;
         }else{ //no se encontro
@@ -63,7 +63,9 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
     }
     if((*exito) == 2){ // no se encontro el elemento por lo tanto se puede insertar
         for(i = (*cant); i > pos; i--){
-            lista[i] = lista[i-1]; //hace el corrimiento
+            if(i<130){
+                lista[i] = lista[i-1]; //hace el corrimiento
+            }
         }
         lista[pos] = x;
         (*exito) = 1;
@@ -103,8 +105,9 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
                 scanf("%d", &opcion);
             }
             if(opcion == 1){ //en caso que si quiera borrarlo
-                for(i = 0; i < (*cant); i++){
+                for(i = pos; i < (*cant); i++){
                     lista[i] = lista[i+1]; //suprimimos el elemento
+                    break;
                 }
                 (*exito) = 1; // se borro
                 (*cant)--; //decrementamos la cantidad total
@@ -152,7 +155,7 @@ int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
 //Evocar
 Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito) {
     int pos = 0;
-    localizar(lista, cant, cod, exito, &pos);
+    localizar(lista, &cant, cod, exito, &pos);
     if (*exito == 1) {
         return &lista[pos];
     } else {
@@ -163,7 +166,9 @@ Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito) {
 //Muestra
 void muestra(Alumno lista[], int cant){
     int i = 0;
+    printf("cant tiene: %d\n",cant);
     while(i < cant){
+        printf("i: %d\n",i);
         printf("Nombre y Apellido: %s \n", lista[i].nombre );
         printf("Mail: %s \n", lista[i].mail);
         printf("Codigo Alumno: %s \n", lista[i].codigo);
@@ -182,34 +187,25 @@ void muestra(Alumno lista[], int cant){
 int memorizacion_previa(Alumno *lista, int *cant, int *exito) {
     FILE *fp;
     Alumno aux;
-    int d = 1;
-    char buffer[256];
-
+    int d=1;
     if ((fp = fopen("Alumnos.txt", "r")) == NULL) {
         printf("Error: No se encontro el archivo 'Alumnos.txt'\n");
         *exito = 0;
         return 0;
     }
+    else{
+        while (feof(fp)==0) {
 
-    while (fgets(buffer, sizeof(buffer), fp) != NULL) { //fgets: Lee una línea completa desde un archivo o entrada estándar, incluyendo el salto de línea si hay espacio.
-        buffer[strcspn(buffer, "\n")] = '\0';           //strcspn: Busca la primera aparición de cualquier carácter de un conjunto en una cadena. ejemplo para elimininar \n del fgets. atoi: Convierte una cadena de caracteres en un número entero
-        if (strlen(buffer) == 0) continue;              // Saltar líneas vacías
-        strncpy(aux.codigo, buffer, sizeof(aux.codigo) - 1);
-
-        if (fgets(buffer, sizeof(buffer), fp) == NULL) break;
-        buffer[strcspn(buffer, "\n")] = '\0';
-        strncpy(aux.nombre, buffer, sizeof(aux.nombre) - 1);
-
-        if (fgets(buffer, sizeof(buffer), fp) == NULL) break;
-        buffer[strcspn(buffer, "\n")] = '\0';
-        strncpy(aux.mail, buffer, sizeof(aux.mail) - 1);
-
-        if (fgets(buffer, sizeof(buffer), fp) == NULL) break;
-        aux.nota = atoi(buffer);
-
-        if (fgets(buffer, sizeof(buffer), fp) == NULL) break;
-        buffer[strcspn(buffer, "\n")] = '\0';
-        strncpy(aux.condicion, buffer, sizeof(aux.condicion) - 1);
+        fscanf(fp, " %[^\n]", aux.codigo);
+        fflush(stdin);
+        fscanf(fp, " %[^\n]", aux.nombre);
+        fflush(stdin);
+        fscanf(fp, " %[^\n]", aux.mail);
+        fflush(stdin);
+        fscanf(fp, "%d", &aux.nota);
+        fflush(stdin);
+        fscanf(fp, " %[^\n]", aux.condicion);
+        fflush(stdin);
 
         printf("Cargando alumno: %d \n", d);
         printf("Codigo: %s\n", aux.codigo);
@@ -219,12 +215,11 @@ int memorizacion_previa(Alumno *lista, int *cant, int *exito) {
         printf("Condicion: %s\n", aux.condicion);
         printf("---\n");
         d++;
-
-        Alta(lista, aux, cant, exito);
+        Alta(lista,aux,cant,exito);
+        }
     }
 
     fclose(fp);
-    printf("Archivo cargado exitosamente. Total de alumnos: %d\n", *cant);
     *exito = 1;
     return 1;
 }

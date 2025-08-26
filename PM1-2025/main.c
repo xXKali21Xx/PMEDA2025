@@ -117,22 +117,33 @@ void limpiar_buffer() {
                 }
                 break;
 
-            case 5:
-                if(cant == 0){
-                    printf("no hay elementos en la lista \n");
-                    break;
-                }
-                printf("\n--- CONSULTAR ALUMNO ---\n");
-              //  resultado = consultar_alumno(&alumnoLSO);
+            case 5: if (cant == 0) {
+                        printf("no hay elementos en la lista.\n");
+                        break;
+                    }
+                    printf("\n--- CONSULTAR ALUMNO ---\n");
+                    printf("Ingrese el codigo del alumno a consultar: \n");
+                    scanf("%s", codigo);
+                    limpiar_buffer();
 
-                if (resultado == 0) {
-                    printf("Alumno no encontrado\n");
-                }
-                break;
+                    Alumno* alumno_encontrado = Evocar(alumnoLSO, &cant, codigo, &exito);
+
+                    if (exito == 1 && alumno_encontrado != NULL) {
+                        printf("\n=== INFORMACION DEL ALUMNO ===\n");
+                        printf("Codigo: %s\n", alumno_encontrado->codigo);
+                        printf("Nombre y Apellido: %s\n", alumno_encontrado->nombre);
+                        printf("Mail: %s\n", alumno_encontrado->mail);
+                        printf("Condicion: %s\n", alumno_encontrado->condicion);
+                        printf("Nota: %d\n", alumno_encontrado->nota);
+                        printf("================================\n");
+                    } else {
+                        printf("Error: Alumno no encontrado\n");
+                    }
+                    break;
 
             case 6:
                 if(cant == 0){
-                    printf("no hay elementos en la lista \n");
+                    printf("No hay elementos en la lista \n");
                     break;
                 }
                 printf("\n--- MOSTRAR ESTRUCTURA COMPLETA ---\n");
