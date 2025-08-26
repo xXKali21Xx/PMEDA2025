@@ -10,7 +10,25 @@ typedef struct{
     char condicion[10]; // 0 = Ausente , 1 = regular , 2 = promociona , 3 = Libre
     int nota;
 }Alumno;
+//Funcion auxiliar
 
+Alumno Ingreso(Alumno *x){
+    printf("Ingrese el nombre y apellido del alumno \n");
+    scanf(" %[^\n]",(*x).nombre);
+    fflush(stdin);
+    printf("Ingrese el mail del alumno \n");
+    scanf(" %[^\n]",(*x).mail);
+    fflush(stdin);
+    printf("Ingrese el codigo del alumno\n");
+    scanf(" %[^\n]",(*x).codigo);
+    fflush(stdin);
+    printf("Ingrese la condicion del alumno\n");
+    scanf(" %[^\n]",(*x).condicion);
+    fflush(stdin);
+    printf("Ingrese la nota del alumno \n");
+    scanf("%d", &(*x).nota);
+    fflush(stdin);
+}
 //Localizar
 int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos){
     int i = 0;
@@ -105,6 +123,7 @@ int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
     localizar(lista, cant, cod, exito, &pos);
     if (*exito == 1) {
         printf("Alumno encontrado: \n");
+        printf("Codigo del alumno: %s \n", lista[pos].codigo);
         printf("Nombre: %s\n", lista[pos].nombre);
         printf("Mail: %s\n", lista[pos].mail);
         printf("Condicion: %s\n", lista[pos].condicion);

@@ -55,6 +55,9 @@ void limpiar_buffer() {
 
             case 2:
                 printf("\n--- INGRESAR NUEVO ALUMNO ---\n");
+                Alumno aux;
+                Ingreso(&aux);
+                Alta(alumnoLSO,aux, &cant, &exito);
                // resultado = ingresar_alumno(&alumnoLSO);
                 if (resultado == 1) {
                     printf("Alumno ingresado exitosamente\n");
