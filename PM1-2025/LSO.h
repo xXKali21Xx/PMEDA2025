@@ -107,7 +107,6 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
             if(opcion == 1){ //en caso que si quiera borrarlo
                 for(i = pos; i < (*cant); i++){
                     lista[i] = lista[i+1]; //suprimimos el elemento
-                    break;
                 }
                 (*exito) = 1; // se borro
                 (*cant)--; //decrementamos la cantidad total
@@ -155,7 +154,7 @@ int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
 //Evocar
 Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito) {
     int pos = 0;
-    localizar(lista, &cant, cod, exito, &pos);
+    localizar(lista, cant, cod, exito, &pos);
     if (*exito == 1) {
         return &lista[pos];
     } else {
@@ -168,7 +167,6 @@ void muestra(Alumno lista[], int cant){
     int i = 0;
     printf("cant tiene: %d\n",cant);
     while(i < cant){
-        printf("i: %d\n",i);
         printf("Nombre y Apellido: %s \n", lista[i].nombre );
         printf("Mail: %s \n", lista[i].mail);
         printf("Codigo Alumno: %s \n", lista[i].codigo);

@@ -78,6 +78,9 @@ void limpiar_buffer() {
                if(exito == -1){
                 printf("La lista esta llena \n");
                }
+               if(exito == 0){
+                    printf("ya hay un alumno cargado con ese codigo \n");
+               }
                 if (exito == 1) {
                     printf("Alumno ingresado exitosamente\n");
                 } else {
@@ -97,7 +100,7 @@ void limpiar_buffer() {
                 if (exito == 1) {
                     printf("Alumno eliminado exitosamente\n");
                 } else {
-                    printf("Error al eliminar el alumno\n");
+                    printf("NO se ha eliminado el alumno \n");
                 }
                 break;
 

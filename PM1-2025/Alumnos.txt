@@ -3,6 +3,11 @@ Babbage, Charles
 0650A25@mailbox.edu.ar
 9
 Promociona
+0650A25
+Babbage, Charles
+0650A25@mailbox.edu.ar
+9
+Promociona
 0072A25
 Boole, George
 0072A25@mailbox.edu.ar
@@ -87,6 +92,11 @@ Libre
 McCarthy, John
 0575A25@mailbox.edu.ar
 3
+Libre
+0974A25
+Sutherland, Ivan
+0974A25@mailbox.edu.ar
+5
 Libre
 0974A25
 Sutherland, Ivan
@@ -458,6 +468,11 @@ Pogue, David
 0096A25@mailbox.edu.ar
 4
 Libre
+0030A25
+Langer, Susan
+0030A25@mailbox.edu.ar
+9
+Promociona
 0030A25
 Langer, Susan
 0030A25@mailbox.edu.ar
