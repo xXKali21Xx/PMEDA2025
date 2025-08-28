@@ -121,7 +121,7 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
 }
 //Modificar
 int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
-    int pos = 0;
+    int pos = 0,d=0;
     localizar(lista, cant, cod, exito, &pos);
     if (*exito == 1) {
         printf("Alumno encontrado: \n");
@@ -130,20 +130,54 @@ int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
         printf("Mail: %s\n", lista[pos].mail);
         printf("Condicion: %s\n", lista[pos].condicion);
         printf("Nota: %d\n", lista[pos].nota);
-        getchar();
-        printf("Ingrese nuevo nombre: \n");
-        scanf("%[^\n]s", lista[pos].nombre);
-        getchar();
-        printf("Ingrese nuevo mail: \n");
-        scanf("%s", lista[pos].mail);
-        getchar();
-        printf("Ingrese nueva condicion: \n");
-        scanf("%s", lista[pos].condicion);
-        getchar();
-        printf("Ingrese nueva nota: \n");
-        scanf("%d", &lista[pos].nota);
-
-        *exito = 1;
+        printf(" \n");
+        printf("Ingrese que quiere modificar: \n");
+        printf("1: Nombre\n");
+        printf("2: Mail\n");
+        printf("3: Condicion\n");
+        printf("4: Nota\n");
+        printf("5: Todos\n");
+        printf("6: Ninguno\n");
+        do{
+        scanf("%d",&d);
+        switch(d){
+           case 1:  getchar();
+                    printf("Ingrese nuevo nombre: \n");
+                    scanf("%[^\n]s", lista[pos].nombre);
+                    *exito = 1;
+                    break;
+           case 2:  getchar();
+                    printf("Ingrese nuevo mail: \n");
+                    scanf("%s", lista[pos].mail);
+                    *exito = 1;
+                    break;
+           case 3:  getchar();
+                    printf("Ingrese nueva condicion: \n");
+                    scanf("%s", lista[pos].condicion);
+                    *exito = 1;
+                    break;
+           case 4:  printf("Ingrese nueva nota: \n");
+                    scanf("%d", &lista[pos].nota);
+                    *exito = 1;
+                    break;
+           case 5:  getchar();
+                    printf("Ingrese nuevo nombre: \n");
+                    scanf("%[^\n]s", lista[pos].nombre);
+                    getchar();
+                    printf("Ingrese nuevo mail: \n");
+                    scanf("%s", lista[pos].mail);
+                    getchar();
+                    printf("Ingrese nueva condicion: \n");
+                    scanf("%s", lista[pos].condicion);
+                    getchar();
+                    printf("Ingrese nueva nota entre 0 y 10: \n");
+                    scanf("%d", &lista[pos].nota);
+                    *exito = 1;
+                    break;
+           case 6: *exito=3; break;
+           default: printf("Error: ingrese una opcion valida\n");break;
+        }
+        }while(d < 1 || d > 6);
     } else {
         *exito = 0;
     }

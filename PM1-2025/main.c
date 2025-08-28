@@ -116,7 +116,11 @@ void limpiar_buffer() {
                 if (exito == 1) {
                     printf("Datos del alumno modificados exitosamente\n");
                 } else {
-                    printf("Error al modificar al alumno\n");
+                        if(exito == 3){
+                            printf("Los datos del alumno no se modificaron\n");
+                        }else {
+                            printf("Error: no se encontro al alumno\n");
+                        }
                 }
                 break;
 
