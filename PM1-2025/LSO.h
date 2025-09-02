@@ -56,6 +56,7 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
     if(*cant  >= 130){
         (*exito) = -1; // no hay epsacio
         pos = -1;
+        return *exito;
     }
     localizar(lista, cant, x.codigo, exito, &pos);
     if((*exito) == 1){ //se encontro el elemento por lo tanto no se puede insertar
@@ -105,7 +106,7 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
                 scanf("%d", &opcion);
             }
             if(opcion == 1){ //en caso que si quiera borrarlo
-                for(i = pos; i < (*cant); i++){
+                for(i = pos; i < (*cant)-1; i++){
                     lista[i] = lista[i+1]; //suprimimos el elemento
                 }
                 (*exito) = 1; // se borro
@@ -121,7 +122,7 @@ int Baja(Alumno lista[], char x[], int *cant, int *exito){
 }
 //Modificar
 int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
-    int pos = 0;
+    int pos = 0,d=0;
     localizar(lista, cant, cod, exito, &pos);
     if (*exito == 1) {
         printf("Alumno encontrado: \n");
@@ -130,20 +131,54 @@ int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
         printf("Mail: %s\n", lista[pos].mail);
         printf("Condicion: %s\n", lista[pos].condicion);
         printf("Nota: %d\n", lista[pos].nota);
-        getchar();
-        printf("Ingrese nuevo nombre: \n");
-        scanf("%[^\n]s", lista[pos].nombre);
-        getchar();
-        printf("Ingrese nuevo mail: \n");
-        scanf("%s", lista[pos].mail);
-        getchar();
-        printf("Ingrese nueva condicion: \n");
-        scanf("%s", lista[pos].condicion);
-        getchar();
-        printf("Ingrese nueva nota: \n");
-        scanf("%d", &lista[pos].nota);
-
-        *exito = 1;
+        printf(" \n");
+        printf("Ingrese que quiere modificar: \n");
+        printf("1: Nombre\n");
+        printf("2: Mail\n");
+        printf("3: Condicion\n");
+        printf("4: Nota\n");
+        printf("5: Todos\n");
+        printf("6: Ninguno\n");
+        do{
+        scanf("%d",&d);
+        switch(d){
+           case 1:  getchar();
+                    printf("Ingrese nuevo nombre: \n");
+                    scanf("%[^\n]s", lista[pos].nombre);
+                    *exito = 1;
+                    break;
+           case 2:  getchar();
+                    printf("Ingrese nuevo mail: \n");
+                    scanf("%s", lista[pos].mail);
+                    *exito = 1;
+                    break;
+           case 3:  getchar();
+                    printf("Ingrese nueva condicion: \n");
+                    scanf("%s", lista[pos].condicion);
+                    *exito = 1;
+                    break;
+           case 4:  printf("Ingrese nueva nota: \n");
+                    scanf("%d", &lista[pos].nota);
+                    *exito = 1;
+                    break;
+           case 5:  getchar();
+                    printf("Ingrese nuevo nombre: \n");
+                    scanf("%[^\n]s", lista[pos].nombre);
+                    getchar();
+                    printf("Ingrese nuevo mail: \n");
+                    scanf("%s", lista[pos].mail);
+                    getchar();
+                    printf("Ingrese nueva condicion: \n");
+                    scanf("%s", lista[pos].condicion);
+                    getchar();
+                    printf("Ingrese nueva nota entre 0 y 10: \n");
+                    scanf("%d", &lista[pos].nota);
+                    *exito = 1;
+                    break;
+           case 6: *exito=3; break;
+           default: printf("Error: ingrese una opcion valida\n");break;
+        }
+        }while(d < 1 || d > 6);
     } else {
         *exito = 0;
     }
@@ -165,7 +200,6 @@ Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito) {
 //Muestra
 void muestra(Alumno lista[], int cant){
     int i = 0;
-    printf("cant tiene: %d\n",cant);
     while(i < cant){
         printf("Nombre y Apellido: %s \n", lista[i].nombre );
         printf("Mail: %s \n", lista[i].mail);
@@ -187,33 +221,36 @@ int memorizacion_previa(Alumno *lista, int *cant, int *exito) {
     Alumno aux;
     int d=1;
     if ((fp = fopen("Alumnos.txt", "r")) == NULL) {
-        printf("Error: No se encontro el archivo 'Alumnos.txt'\n");
         *exito = 0;
         return 0;
     }
     else{
         while (feof(fp)==0) {
+            if (*cant<130){
+                fscanf(fp, " %[^\n]", aux.codigo);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.nombre);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.mail);
+                fflush(stdin);
+                fscanf(fp, "%d", &aux.nota);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.condicion);
+                fflush(stdin);
 
-        fscanf(fp, " %[^\n]", aux.codigo);
-        fflush(stdin);
-        fscanf(fp, " %[^\n]", aux.nombre);
-        fflush(stdin);
-        fscanf(fp, " %[^\n]", aux.mail);
-        fflush(stdin);
-        fscanf(fp, "%d", &aux.nota);
-        fflush(stdin);
-        fscanf(fp, " %[^\n]", aux.condicion);
-        fflush(stdin);
-
-        printf("Cargando alumno: %d \n", d);
-        printf("Codigo: %s\n", aux.codigo);
-        printf("Nombre: %s\n", aux.nombre);
-        printf("Mail: %s\n", aux.mail);
-        printf("Nota: %d\n", aux.nota);
-        printf("Condicion: %s\n", aux.condicion);
-        printf("---\n");
-        d++;
-        Alta(lista,aux,cant,exito);
+                printf("Cargando alumno: %d \n", d);
+                printf("Codigo: %s\n", aux.codigo);
+                printf("Nombre: %s\n", aux.nombre);
+                printf("Mail: %s\n", aux.mail);
+                printf("Nota: %d\n", aux.nota);
+                printf("Condicion: %s\n", aux.condicion);
+                printf("---\n");
+                d++;
+                Alta(lista,aux,cant,exito);
+            }else{
+                printf("Error: La lista esta llena\n");
+                break;
+            }
         }
     }
 
