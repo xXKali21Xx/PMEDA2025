@@ -74,7 +74,6 @@ void limpiar_buffer() {
                 fflush(stdin);
 
                 Alta(alumnoLSO,aux, &cant, &exito);
-               // resultado = ingresar_alumno(&alumnoLSO);
                if(exito == -1){
                 printf("La lista esta llena \n");
                }

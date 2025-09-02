@@ -199,7 +199,6 @@ Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito) {
 //Muestra
 void muestra(Alumno lista[], int cant){
     int i = 0;
-    printf("cant tiene: %d\n",cant);
     while(i < cant){
         printf("Nombre y Apellido: %s \n", lista[i].nombre );
         printf("Mail: %s \n", lista[i].mail);
@@ -221,33 +220,36 @@ int memorizacion_previa(Alumno *lista, int *cant, int *exito) {
     Alumno aux;
     int d=1;
     if ((fp = fopen("Alumnos.txt", "r")) == NULL) {
-        printf("Error: No se encontro el archivo 'Alumnos.txt'\n");
         *exito = 0;
         return 0;
     }
     else{
         while (feof(fp)==0) {
+            if (*cant<130){
+                fscanf(fp, " %[^\n]", aux.codigo);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.nombre);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.mail);
+                fflush(stdin);
+                fscanf(fp, "%d", &aux.nota);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.condicion);
+                fflush(stdin);
 
-        fscanf(fp, " %[^\n]", aux.codigo);
-        fflush(stdin);
-        fscanf(fp, " %[^\n]", aux.nombre);
-        fflush(stdin);
-        fscanf(fp, " %[^\n]", aux.mail);
-        fflush(stdin);
-        fscanf(fp, "%d", &aux.nota);
-        fflush(stdin);
-        fscanf(fp, " %[^\n]", aux.condicion);
-        fflush(stdin);
-
-        printf("Cargando alumno: %d \n", d);
-        printf("Codigo: %s\n", aux.codigo);
-        printf("Nombre: %s\n", aux.nombre);
-        printf("Mail: %s\n", aux.mail);
-        printf("Nota: %d\n", aux.nota);
-        printf("Condicion: %s\n", aux.condicion);
-        printf("---\n");
-        d++;
-        Alta(lista,aux,cant,exito);
+                printf("Cargando alumno: %d \n", d);
+                printf("Codigo: %s\n", aux.codigo);
+                printf("Nombre: %s\n", aux.nombre);
+                printf("Mail: %s\n", aux.mail);
+                printf("Nota: %d\n", aux.nota);
+                printf("Condicion: %s\n", aux.condicion);
+                printf("---\n");
+                d++;
+                Alta(lista,aux,cant,exito);
+            }else{
+                printf("Error: La lista esta llena\n");
+                break;
+            }
         }
     }
 
