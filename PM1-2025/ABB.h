@@ -15,29 +15,29 @@ typedef struct{
 }arbol;
 
 void init(arbol a){ //inicializa el arbol
-    a->raiz = null;
-    a->cursor = null;
-    a->aux = null;
+    a->raiz = NULL;
+    a->cursor = NULL;
+    a->aux = NULL;
     a->cant = 0;
 }
 
 nodo* nuevonodoABB(Alumno x){
     nodo* n = (nodo*)malloc(sieof(nodo));
-    if(n == null){
+    if(n == NULL){
         return n; //caso de que no tenga memoria sale
     }
     n->dato = x;
-    n->Derecha = null;
-    n->izquierda= null;
+    n->Derecha = NULL;
+    n->izquierda= NULL;
     return n; //caso que tenga memoria crea un nodo con izq y derecha nulos
 }
 
 arbol nuevoarbol(){
     arbol a;
-    a->raiz = null;
-    a->aux = null;
+    a->raiz = NULL;
+    a->aux = NULL;
     a->cant = 0;
-    a->cursor = null;
+    a->cursor = NULL;
     return a;
 }
 #endif // ABB_H_INCLUDED
