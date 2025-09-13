@@ -14,7 +14,7 @@ typedef struct{
     int cant; //cantidad de elementos en el arbol
 }arbol;
 
-void init(arbol a){ //inicializa el arbol
+void init(arbol *a){ //inicializa el arbol
     a->raiz = NULL;
     a->cursor = NULL;
     a->aux = NULL;
@@ -22,7 +22,7 @@ void init(arbol a){ //inicializa el arbol
 }
 
 nodo* nuevonodoABB(Alumno x){
-    nodo* n = (nodo*)malloc(sieof(nodo));
+    nodo* n = (nodo*)malloc(sizeof(nodo));
     if(n == NULL){
         return n; //caso de que no tenga memoria sale
     }
@@ -34,10 +34,41 @@ nodo* nuevonodoABB(Alumno x){
 
 arbol nuevoarbol(){
     arbol a;
-    a->raiz = NULL;
-    a->aux = NULL;
-    a->cant = 0;
-    a->cursor = NULL;
+    a.raiz = NULL;
+    a.aux = NULL;
+    a.cant = 0;
+    a.cursor = NULL;
     return a;
+}
+void localizarABB(arbol *a, char cod[], int *exito, float *costo) {
+
+    if (a == NULL || a->raiz == NULL) {
+        *exito = 0;
+        return;
+    }
+
+    a->cursor = a->raiz;
+    a->aux = NULL;
+
+    while (a->cursor != NULL) {
+        *costo = *costo + 1;
+
+        int comparacion = strcmp(a->cursor->dato.codigo, cod);
+
+        if (comparacion == 0) {
+            *exito = 1;
+            return;
+        }
+
+        a->aux = a->cursor;
+
+        if (comparacion > 0) {
+            a->cursor = a->cursor->izquierda;
+        } else {
+            a->cursor = a->cursor->Derecha;
+        }
+    }
+
+    *exito = 0;
 }
 #endif // ABB_H_INCLUDED

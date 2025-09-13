@@ -25,12 +25,16 @@
 	"string.h"
 	"stdio.h"
 
-1756770825 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
+1757732992 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
 	<stdio.h>
 	<stdlib.h>
 	"LSO.h"
+	"ABB.h"
 
-1756778230 c:\users\administrator\documents\github\pmeda2025\pm1-2025\lso.h
+1757617602 c:\users\administrator\documents\github\pmeda2025\pm1-2025\lso.h
 	"string.h"
 	"stdio.h"
+
+1757733219 c:\users\administrator\documents\github\pmeda2025\pm1-2025\abb.h
+	"LSO.h"
 
