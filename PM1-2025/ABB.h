@@ -40,8 +40,38 @@ arbol nuevoarbol(){
     a->cursor = NULL;
     return a;
 }
+void localizarABB(arbol *a, char cod[], int *exito, float *costo) {
 
-//funcion auxiliar 
+    if (a == NULL || a->raiz == NULL) {
+        *exito = 0;
+        return;
+    }
+
+    a->cursor = a->raiz;
+    a->aux = NULL;
+
+    while (a->cursor != NULL) {
+        *costo = *costo + 1;
+
+        int comparacion = strcmp(a->cursor->dato.codigo, cod);
+
+        if (comparacion == 0) {
+            *exito = 1;
+            return;
+        }
+
+        a->aux = a->cursor;
+
+        if (comparacion > 0) {
+            a->cursor = a->cursor->izquierda;
+        } else {
+            a->cursor = a->cursor->Derecha;
+        }
+    }
+
+    *exito = 0;
+
+//funcion auxiliar
 int confirmacionbaja(arbol a, arbol b,){ //compara dos nodos
     if(strcmpi(a->cursor->dato.codigo,b->cursor->dato.codigo)==0){
         if(strcmpi(a->cursor->dato.nombre,b->cursor->dato.nombre)==0){
@@ -88,15 +118,15 @@ int BajaABB(arbol *a,char cod[],float *costo,int *exito){
             if(a->cursor->Derecha == NULL && a->cursor->izquierda != NULL){
             if(a->cursor == a->raiz){ //es raiz
                 a->raiz = a->cursor->izquierda;
-            }                
+            }
             if (a->aux->izquierda == a->cursor){ //padre izquierdo
             a->aux->izquierda = a->cursor->izquierda;
             }else{
                 a->aux->Derecha = a->cursor->izquierda; //padre dercho
             }
             free((void*)(a->cursor));
-            *costo = *costo + 0.5;          
-            a->cant--;    
+            *costo = *costo + 0.5;
+            a->cant--;
             }
             //con hijo der
             if(a->cursor->Derecha != NULL && a->cursor->izquierda == NULL){
@@ -111,11 +141,11 @@ int BajaABB(arbol *a,char cod[],float *costo,int *exito){
                 free((void*)(a->cursor));
                 *costo = *costo + 0.5;
                 a->cant--;
-            }   
+            }
             //con dos hijos
             //Con dos hijo,Politica de Remplazo mayor de los menores
             if(a->cursor->Derecha != NULL && a->cursor->izquierda != NULL){
-                nodo *mayor = a->cursor->izquierda; //apunta al hijo izquierdo 
+                nodo *mayor = a->cursor->izquierda; //apunta al hijo izquierdo
                 nodo *padremayor = a->cursor; //apunta al padre mayor
 
                 //busco el mayor dentro del arbol izquierdo
@@ -143,7 +173,7 @@ int BajaABB(arbol *a,char cod[],float *costo,int *exito){
         }
     }else{
         *exito = 0; //no se encontro el alumno
-        return -1; 
+        return -1;
     }
 }
 
