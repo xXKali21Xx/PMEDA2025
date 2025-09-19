@@ -8,41 +8,36 @@ typedef struct
 } LIBT;
 
 int localizarLSOBT(int *exito, char codigo[], LIBT lista[], float *costo, int cant, int *pos){
-    int li = 0, ls = cant-1;//limite inferior y superior inclusivo
+    int li = 0, ls = cant;//limite inferior y superior inclusivo
     int t; //testigo
    
     if (cant == 0){
         (*exito) = -1;
-        pos = 0;
+        (*pos) = 0;
         return -1; //lista vacia
     }
-    while(li < ls){
-        t = (li + (ls + 1)) / 2;
-        
-        if(strcmp(lista.alumnoslibt[t]->codigo, codigo) == 0){//compara el codigo con el testigo
-            (*exito) = 1; //se encontro
-            (*pos) = t;
-            (*costo) += 1;
+     t = ceil((li + ls) / 2);
+    while((li <= ls) && strcmpi(lista->alumnoslibt[t]->codigo, codigo) != 0){
+        if(strcmpi(lista->alumnoslibt[t]->codigo, codigo) < 0){
+            ls = t - 1;
+            
         }else{
-            if(strcmp(lista.alumnoslibt[t]->codigo, codigo) < 0){//si el codigo es menor que el testigo
-                li = t + 1;
-                (*costo) += 1;
-            }else{ //el codigo es mayor que el testigo
-                ls = t;
-                (*costo) += 1;
-            }
-        }
-    }if(strcmp(lista.alumnoslibt[li]->codigo, codigo) == 0){
-        (*exito) = 1; 
-        (*pos) = li;
+            li = t + 1;
+            
+        } 
         (*costo) += 1;
-        return 1; //se encontro el elemento
-    }else{
-        (*exito) = 0; 
-        (*pos) = li; //posicion donde se deberia insertar
-        (*costo) += 1;
-        return 0; //no se encontro el elemento
+        t = ceil((li + ls) / 2);
     }
+    if(strcmpi(lista->alumnoslibt[t]->codigo, codigo) > 0){
+        (*exito) = 0; 
+        (*pos) = ls + 1; 
+        (*costo) += 1;
+        return (*exito);
+    }
+    (*pos) = t;
+    (*exito) = 1;
+    (*costo) += 1;
+    return (*exito);
 }
 
 int AltaLI(LIBT lista[], Alumno x, int *cant, int *exito, float *costo ){
