@@ -214,4 +214,44 @@ void muestraABB(arbol a){
     muestraABB(a->cursor->Derecha);
 >>>>>>> 209f4d6f5d90c13bdb9cd243e6ff9a193d611eec
 }
+int precargarOperacionesABB(arbol *a,float *costo,int *exito) {
+    FILE *fp;
+    int eleccion;
+    Alumno aux;
+    if ((fp = fopen("Operaciones-Alumnos.txt", "r")==NULL) {
+        *exito = 0;
+        return 0;
+    }else{
+    while (fscanf(fp, "%d", &eleccion) == 1) {
+        switch (eleccion) {
+            case 1:
+                fscanf(fp, " %[^\n]", aux.codigo);
+                fscanf(fp, " %[^\n]", aux.nombre);
+                fscanf(fp, " %[^\n]", aux.mail);
+                fscanf(fp, "%d", &aux.nota);
+                fscanf(fp, " %[^\n]", aux.condicion);
+                altaABB(a,aux,costo,exito);
+                break;
+
+            case 2:
+                fscanf(fp, " %[^\n]", aux.codigo);
+                fscanf(fp, " %[^\n]", aux.nombre);
+                fscanf(fp, " %[^\n]", aux.mail);
+                fscanf(fp, "%d", &aux.nota);
+                fscanf(fp, " %[^\n]", aux.condicion);
+                BajaABB(a,aux.codigo,costo,exito);
+                break;
+
+            case 3:
+                fscanf(fp, " %[^\n]", aux.codigo);
+                evocarABB(a,exito,costo,aux.codigo);
+                break;
+        }
+     }
+    }
+    fclose(fp);
+    *exito 1;
+    return 1;
+}
+
 #endif // ABB_H_INCLUDED
