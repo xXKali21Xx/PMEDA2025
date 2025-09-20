@@ -175,7 +175,7 @@ int BajaABB(arbol *a,arbol *b, char cod[],float *costo,int *exito){
                 nodo *padremayor = a->cursor; //apunta al padre mayor
 
                 //busco el mayor dentro del arbol izquierdo
-                while(mayor->dato != NULL){
+                while(mayor->Derecha != NULL){
                     padremayor = mayor;
                     mayor = mayor->Derecha;
                 }
@@ -221,24 +221,32 @@ Alumno evocarABB(arbol *a, int *exito, float *costo, char cod[]){
     }
 }
 
-int muestraABB(arbol *a){
-    if(a->raiz == NULL){
+int muestranodo(nodo *raiz){
+    if(raiz == NULL){
         return -1; //arbol vacio
     }
     //recorrido PRE-ORDEN
     printf("----------------------------------------- \n");
-    printf("Nodo Numero: %d \n", a->cant);
-    printf("Nombre: %s\n", a->cursor->dato.nombre);
-    printf("Codigo: %s\n", a->cursor->dato.codigo);
-    printf("Mail: %s\n", a->cursor->dato.mail);
-    printf("Condicion: %s\n", a->cursor->dato.condicion);
-    printf("Nota: %d\n", a->cursor->dato.nota);
+    printf("Nombre: %s\n", raiz->dato.nombre);
+    printf("Codigo: %s\n", raiz->dato.codigo);
+    printf("Mail: %s\n", raiz->dato.mail);
+    printf("Condicion: %s\n", raiz->dato.condicion);
+    printf("Nota: %d\n", raiz->dato.nota);
     printf("----------------------------------------- \n");
 
-    muestraABB(a->cursor->izquierda);
-    muestraABB(a->cursor->Derecha);
-//>>>>>>> 209f4d6f5d90c13bdb9cd243e6ff9a193d611eec
+    muestranodo(raiz->izquierda);
+    muestranodo(raiz->Derecha);
 }
+
+int muestraABB(arbol *a){
+    if(a->raiz == NULL){
+        return -1;
+    }
+    printf("---- MUESTRA ARBOL ---- \n");
+    muestranodo(a->raiz);
+    return 1; //se mostro con exito
+}
+
 int precargarOperacionesABB(arbol *a,float *costo,int *exito) {
     FILE *fp;
     int eleccion;

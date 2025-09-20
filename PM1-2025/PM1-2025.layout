@@ -2,30 +2,27 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-<<<<<<< HEAD
+	<File name="LIBT.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="ABB.h" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1186" topLine="38" />
-=======
+			<Cursor1 position="9219" topLine="208" />
+		</Cursor>
+		<Folding>
+			<Collapse line="75" />
+		</Folding>
+	</File>
 	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1220" topLine="39" />
+			<Cursor1 position="0" topLine="141" />
 		</Cursor>
 	</File>
-	<File name="ABB.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="LSO.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="81" />
-		</Cursor>
-	</File>
-	<File name="LSO.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1756" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="LIBT.h" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="536" topLine="7" />
->>>>>>> 209f4d6f5d90c13bdb9cd243e6ff9a193d611eec
+			<Cursor1 position="302" topLine="15" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
