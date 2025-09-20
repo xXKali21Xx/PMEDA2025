@@ -1,7 +1,7 @@
 #ifndef ABB_H_INCLUDED
 #define ABB_H_INCLUDED
 #include "LSO.h"
-typedef struct{
+typedef struct nodo{
     Alumno dato; //dato del alumno
     struct nodo *Derecha; //apunta al nodo derecho
     struct nodo *izquierda; //apunta al nodo izquierdo
@@ -73,7 +73,7 @@ void localizarABB(arbol *a, char cod[], int *exito, float *costo) {
 }
 
 //funcion auxiliar
-int confirmacionbaja(arbol a, arbol b,){ //compara dos nodos
+int confirmacionbaja(arbol *a, arbol *b){ //compara dos nodos
     if(strcmpi(a->cursor->dato.codigo,b->cursor->dato.codigo)==0){
         if(strcmpi(a->cursor->dato.nombre,b->cursor->dato.nombre)==0){
             if(strcmpi(a->cursor->dato.mail,b->cursor->dato.mail)==0){
@@ -91,12 +91,37 @@ int confirmacionbaja(arbol a, arbol b,){ //compara dos nodos
             }
         }else{
             return 0;
-    }else{
+    }}else{
         return 0;
     }
 }
+int AltaABB(arbol *a, Alumno x, int *exito, float *costo, int *cant){
+    localizarABB(a,x.codigo,exito,costo);
+    if(exito == 1){
+        *exito = 0;
+    }else{
+        nodo* nuevo = nuevonodoABB(x);//creamos un nodo nuevo
+        if(nuevo != NULL){
+            if(a->raiz == NULL){// si la raiz no tiene valor se ingresa el dato como la raiz
+                a->raiz = nuevo;
+                a->cant = a->cant + 1;
+                *costo = *costo + 0.5;
+            }else{
+                if(a->aux->dato.codigo < x.codigo){// caso que sea mayor se ingresa a la derecha
+                    a->aux->Derecha = nuevo;
+                    a->cant = a->cant + 1;
+                    *costo = *costo + 0.5;
+                }else{// caso que sea menor se ingresa a la izquierda
+                    a->aux->izquierda = nuevo;
+                    a->cant = a->cant + 1;
+                    *costo = *costo + 0.5;
+                }
+            }
+        *exito = 1;
+        }
+    }
 }
-int BajaABB(arbol *a,char cod[],float *costo,int *exito){
+int BajaABB(arbol *a,arbol *b, char cod[],float *costo,int *exito){
     //localizarABB(a,cod,exito,costo);
     if(exito){
         if(confirmacionbaja(a,b)==1){
@@ -180,23 +205,23 @@ int BajaABB(arbol *a,char cod[],float *costo,int *exito){
 
 Alumno evocarABB(arbol *a, int *exito, float *costo, char cod[]){
     int exitoL;//va con el localizar
-    Alumno x;
+    Alumno *x;
     //localizarABB
     if(exito){
-        strcpy(x->correo, a->cursor->dato.correo);
+        strcpy(x->mail, a->cursor->dato.mail);
         strcpy(x->nombre, a->cursor->dato.nombre);
         strcpy(x->codigo, a->cursor->dato.codigo);
         strcpy(x->condicion, a->cursor->dato.condicion);
         x->nota = a->cursor->dato.nota;
         (*exito) = 1;
-        return x; //devuelve el alumno encontrado
+        return *x; //devuelve el alumno encontrado
     }else{
         (*exito) = 0;
-        return x; //devuelve un alumno vacio
+        return *x; //devuelve un alumno vacio
     }
 }
 
-void muestraABB(arbol a){
+int muestraABB(arbol *a){
     if(a->raiz == NULL){
         return -1; //arbol vacio
     }
@@ -212,7 +237,7 @@ void muestraABB(arbol a){
 
     muestraABB(a->cursor->izquierda);
     muestraABB(a->cursor->Derecha);
->>>>>>> 209f4d6f5d90c13bdb9cd243e6ff9a193d611eec
+//>>>>>>> 209f4d6f5d90c13bdb9cd243e6ff9a193d611eec
 }
 int precargarOperacionesABB(arbol *a,float *costo,int *exito) {
     FILE *fp;
