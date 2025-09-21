@@ -60,11 +60,12 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
         *exito = 0;
     } else {
         int shifts = (*cant) - pos;
-        *costo += shifts * 1.0;
+        //*costo += shifts * 1.0;
 
         // Realizar corrimientos
         for(i = (*cant); i > pos; i--){
             lista[i] = lista[i-1];
+            (*costo) = (*costo) + 1;
         }
         lista[pos] = x;
         *exito = 1;
@@ -95,10 +96,11 @@ int Baja(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
            strcmpi(lista[pos].condicion, x.condicion) == 0 &&
            lista[pos].nota == x.nota)
         {
-            *costo += (*cant) - 1 - pos;
+            //*costo += (*cant) - 1 - pos;
 
             for(i = pos; i < (*cant)-1; i++){
                 lista[i] = lista[i+1];
+                (*costo) = (*costo) + 1;
             }
             (*exito) = 1; // Borrado exitoso
             (*cant)--;

@@ -8,13 +8,16 @@
 	"string.h"
 	"stdio.h"
 
-1758388144 source:c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\main.c
+1758487733 source:c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\main.c
+	"LSO.h"
+	"LIBT.h"
+	"ABB.h"
+	"Comparaciones.h"
 	<stdio.h>
 	<stdlib.h>
-	"LSO.h"
-	"ABB.h"
+	<string.h>
 
-1758388220 c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\lso.h
+1758485824 c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\lso.h
 	"string.h"
 	"stdio.h"
 
@@ -43,10 +46,17 @@
 	"LSO.h"
 	<stdlib.h>
 
-1758410076 c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\abb.h
+1758484996 c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\abb.h
 	"LSO.h"
+	<stdlib.h>
 
 1758435803 c:\users\administrator\documents\github\pmeda2025\pm1-2025\libt.h
 	"LSO.h"
 	<stdlib.h>
+
+1758484996 c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\libt.h
+	"LSO.h"
+	<stdlib.h>
+
+1758487709 c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\comparaciones.h
 
