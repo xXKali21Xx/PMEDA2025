@@ -4,122 +4,174 @@
 #include "stdio.h"
 
 typedef struct{
-    char nombre[80];
+    char nombre[80]; //contiene el apellido
     char mail[24];
     char codigo[8];
-    char condicion[11]; // CORREGIDO: de 10 a 11 para el char nulo '\0'
+    char condicion[10]; // 0 = Ausente , 1 = regular , 2 = promociona , 3 = Libre
     int nota;
 }Alumno;
 
 //Localizar
-int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos, float *costo){
+int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos){
     int i = 0;
-    *costo = 0.0;
-
-    if(*cant == 0){
-        *exito = 0; // Lista vacia
-        *pos = 0;
-        return *exito;
-    }
-
-    while((i < *cant) && (strcmpi(lista[i].codigo,cod) < 0)){
-        (*costo) += 1.0;
-        i++;
-    }
-
-    if (i < *cant) {
-        (*costo) += 1.0;
-        if(strcmpi(lista[i].codigo,cod) == 0){
-            *exito = 1; // Encontrado
-            *pos = i;
-        } else {
-            *exito = 0; // No encontrado
-            *pos = i;
+    if(*cant == 0){ //no hay elementos en la lista
+        (*exito) = 2;
+        (*pos) = 0;
+    }else{
+        while((i < *cant) && (strcmpi(lista[i].codigo,cod) < 0)){ //mientras que no salga de la lista y el codigo sea menor compara
+            i++;
         }
-    } else {
-        *exito = 0; // No encontrado, insertar al final
-        *pos = i;
+        if((i < *cant) && (strcmpi(lista[i].codigo,cod) == 0)){ //si sigue dentro de la lista y el codigo comparado es igual se encontro
+            (*exito) = 1; //se encontro
+            (*pos) = i;
+        }else{ //no se encontro
+            (*exito) = 2;
+            (*pos) = i; // posicion donde se puede insertar el elemento
+        }
     }
     return *exito;
 }
-
-int Alta(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
+//Alta
+int Alta(Alumno lista[], Alumno x, int *cant, int *exito){
     int pos = 0;
     int i = 0;
-    float costoLocal = 0.0;
-
-    if(*cant >= 130){
-        *exito = -1; // Lista llena
+    if(*cant  >= 130){
+        (*exito) = -1; // no hay epsacio
+        pos = -1;
         return *exito;
     }
-
-    localizar(lista, cant, x.codigo, exito, &pos, &costoLocal);
-    *costo += costoLocal;
-
-    if(*exito == 1){
-        *exito = 0; // Elemento ya existe
-    } else {
-        // Calcular costo de corrimiento
-        int shifts = (*cant) - pos;
-        // CORREGIDO: Costo de corrimiento de tupla es 1
-        *costo += shifts * 1.0;
-
-        // Realizar corrimientos
+    localizar(lista, cant, x.codigo, exito, &pos);
+    if((*exito) == 1){ //se encontro el elemento por lo tanto no se puede insertar
+        (*exito) = 0;
+    }
+    if((*exito) == 2){ // no se encontro el elemento por lo tanto se puede insertar
         for(i = (*cant); i > pos; i--){
-            lista[i] = lista[i-1];
+            if(i<130){
+                lista[i] = lista[i-1]; //hace el corrimiento
+            }
         }
         lista[pos] = x;
-        *exito = 1;
+        (*exito) = 1;
         (*cant)++;
     }
     return *exito;
 }
-
 //Baja
-int Baja(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
+int Baja(Alumno lista[], char x[], int *cant, int *exito){
     int pos;
     int i;
-    float costoLocal = 0.0;
+    int opcion = 0;
+    if((*cant) == 0){
+        (*exito) = -1; //no hay elementos en la lista
+    }
+    localizar(lista,cant,x,exito,&pos);
 
-    if(*cant == 0){
-        *exito = 0; // Lista vacía
-        return *exito;
+    if((*exito) == 2){
+        (*exito) = 2; //el elemento no se encontro en la lista
+    }else{
+        if((*exito) == 1){ //el elemento esta en la lista
+            printf("Nombre y Apellido: %s \n", lista[pos].nombre );
+            printf("Mail: %s \n", lista[pos].mail);
+            printf("Codigo Alumno: %s \n", lista[pos].codigo);
+            printf("Condicion: %s \n", lista[pos].condicion);
+            printf("Nota: %d \n", lista[pos].nota);
+
+            printf("------------------------------------------- \n"); //mostramos el elemento
+
+            printf("ingrese 1 si quiere borrar el elemento \n");
+            printf("ingrese 0 si NO quiere borrar el elemento \n"); // confirmacion de la baja
+            scanf("%d", &opcion);
+            while(opcion != 1 && opcion != 0){
+                printf("ERROR, ingrese un valor correcto \n");
+                printf("ingrese 1 si quiere borrar el elemento \n");
+                printf("ingrese 0 si NO quiere borrar el elemento \n");
+                scanf("%d", &opcion);
+            }
+            if(opcion == 1){ //en caso que si quiera borrarlo
+                for(i = pos; i < (*cant)-1; i++){
+                    lista[i] = lista[i+1]; //suprimimos el elemento
+                }
+                (*exito) = 1; // se borro
+                (*cant)--; //decrementamos la cantidad total
+            }else{
+                (*exito) = 0; // no se borro
+            }
+        }
     }
 
-    localizar(lista, cant, x.codigo, exito, &pos, &costoLocal);
-    *costo += costoLocal;
+    return (*exito);
 
-    if(*exito == 0){
-        *exito = 2; // No se encontró
-    } else {
-        // Confirmación por código comparando toda la tupla [cite: 73]
-        if(strcmpi(lista[pos].nombre, x.nombre) == 0 &&
-           strcmpi(lista[pos].mail, x.mail) == 0 &&
-           strcmpi(lista[pos].condicion, x.condicion) == 0 &&
-           lista[pos].nota == x.nota)
-        {
-            // El costo de corrimiento es 1 por tupla
-            *costo += (*cant) - 1 - pos;
-
-            for(i = pos; i < (*cant)-1; i++){
-                lista[i] = lista[i+1];
-            }
-            (*exito) = 1; // Borrado exitoso
-            (*cant)--;
-        } else {
-            *exito = 3; // Los datos no coinciden, no se borra
+}
+//Modificar
+int Modificar(Alumno lista[], int *cant, char cod[], int *exito) {
+    int pos = 0,d=0;
+    localizar(lista, cant, cod, exito, &pos);
+    if (*exito == 1) {
+        printf("Alumno encontrado: \n");
+        printf("Codigo del alumno: %s \n", lista[pos].codigo);
+        printf("Nombre: %s\n", lista[pos].nombre);
+        printf("Mail: %s\n", lista[pos].mail);
+        printf("Condicion: %s\n", lista[pos].condicion);
+        printf("Nota: %d\n", lista[pos].nota);
+        printf(" \n");
+        printf("Ingrese que quiere modificar: \n");
+        printf("1: Nombre\n");
+        printf("2: Mail\n");
+        printf("3: Condicion\n");
+        printf("4: Nota\n");
+        printf("5: Todos\n");
+        printf("6: Ninguno\n");
+        do{
+        scanf("%d",&d);
+        switch(d){
+           case 1:  getchar();
+                    printf("Ingrese nuevo nombre: \n");
+                    scanf("%[^\n]s", lista[pos].nombre);
+                    *exito = 1;
+                    break;
+           case 2:  getchar();
+                    printf("Ingrese nuevo mail: \n");
+                    scanf("%s", lista[pos].mail);
+                    *exito = 1;
+                    break;
+           case 3:  getchar();
+                    printf("Ingrese nueva condicion: \n");
+                    scanf("%s", lista[pos].condicion);
+                    *exito = 1;
+                    break;
+           case 4:  printf("Ingrese nueva nota: \n");
+                    scanf("%d", &lista[pos].nota);
+                    *exito = 1;
+                    break;
+           case 5:  getchar();
+                    printf("Ingrese nuevo nombre: \n");
+                    scanf("%[^\n]s", lista[pos].nombre);
+                    getchar();
+                    printf("Ingrese nuevo mail: \n");
+                    scanf("%s", lista[pos].mail);
+                    getchar();
+                    printf("Ingrese nueva condicion: \n");
+                    scanf("%s", lista[pos].condicion);
+                    getchar();
+                    printf("Ingrese nueva nota entre 0 y 10: \n");
+                    scanf("%d", &lista[pos].nota);
+                    *exito = 1;
+                    break;
+           case 6: *exito=3; break;
+           default: printf("Error: ingrese una opcion valida\n");break;
         }
+        }while(d < 1 || d > 6);
+    } else {
+        *exito = 0;
     }
     return *exito;
 }
 
-//Evocar
-Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito, float *costo) {
-    int pos = 0;
-    float costoLocal = 0.0;
-    localizar(lista, cant, cod, exito, &pos, &costoLocal);
-    *costo += costoLocal;
 
+//Evocar
+Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito) {
+    int pos = 0;
+    localizar(lista, cant, cod, exito, &pos);
     if (*exito == 1) {
         return &lista[pos];
     } else {
@@ -128,24 +180,64 @@ Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito, float *costo) 
 }
 
 //Muestra
-void muestralso(Alumno lista[], int cant){
+void muestra(Alumno lista[], int cant){
     int i = 0;
-    printf("----- LISTA DE ALUMNOS LSO ----- \n");
-    if(cant == 0) printf("La lista está vacía.\n");
     while(i < cant){
-        printf("Alumno %d:\n", i + 1);
-        printf("  Nombre y Apellido: %s \n", lista[i].nombre );
-        printf("  Mail: %s \n", lista[i].mail);
-        printf("  Codigo Alumno: %s \n", lista[i].codigo);
-        printf("  Condicion: %s \n", lista[i].condicion);
-        printf("  Nota: %d \n", lista[i].nota);
-        printf("---------------------------------\n");
+        printf("Nombre y Apellido: %s \n", lista[i].nombre );
+        printf("Mail: %s \n", lista[i].mail);
+        printf("Codigo Alumno: %s \n", lista[i].codigo);
+        printf("Condicion: %s \n", lista[i].condicion);
+        printf("Nota: %d \n", lista[i].nota);
         i++;
-        if(i % 5 == 0 && i < cant){
-            printf("Presione Enter para continuar...");
+        printf("------------------------------------------- \n");
+        if(i%5 == 0){
+            printf("Presiones enter para continuar... \n");
             getchar();
         }
     }
 }
 
+//memorizacion previa
+int memorizacion_previa(Alumno *lista, int *cant, int *exito) {
+    FILE *fp;
+    Alumno aux;
+    int d=1;
+    if ((fp = fopen("Alumnos.txt", "r")) == NULL) {
+        *exito = 0;
+        return 0;
+    }
+    else{
+        while (feof(fp)==0) {
+            if (*cant<130){
+                fscanf(fp, " %[^\n]", aux.codigo);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.nombre);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.mail);
+                fflush(stdin);
+                fscanf(fp, "%d", &aux.nota);
+                fflush(stdin);
+                fscanf(fp, " %[^\n]", aux.condicion);
+                fflush(stdin);
+
+                printf("Cargando alumno: %d \n", d);
+                printf("Codigo: %s\n", aux.codigo);
+                printf("Nombre: %s\n", aux.nombre);
+                printf("Mail: %s\n", aux.mail);
+                printf("Nota: %d\n", aux.nota);
+                printf("Condicion: %s\n", aux.condicion);
+                printf("---\n");
+                d++;
+                Alta(lista,aux,cant,exito);
+            }else{
+                printf("Error: La lista esta llena\n");
+                break;
+            }
+        }
+    }
+
+    fclose(fp);
+    *exito = 1;
+    return 1;
+}
 #endif // LSO_H_INCLUDED
