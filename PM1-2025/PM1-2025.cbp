@@ -34,6 +34,9 @@
 		<Unit filename="ABB.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="Comparaciones.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="LIBT.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
