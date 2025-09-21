@@ -22,7 +22,7 @@ void procesarEvocacion(char* codigo, Alumno lso[], int cantLSO, Costos *costoLSO
 
 void compararEstructuras(Alumno lso[], int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
 void mostrarResultados(int cantLSO, int cantLIBT, int cantABB, Costos costoLSO, Costos costoLIBT, Costos costoABB);
-void limpiarTodo(int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
+void Inicializar(int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
 void free_abb_nodes(nodo *n);
 
 int main() {
@@ -61,10 +61,10 @@ int main() {
                 muestraABB(&abb);
                 break;
             case 3:
-                printf("\nUsted a Cerrado el Programa\n");
+                printf("Usted a Cerrado el Programa\n");
                 break;
             default:
-                printf("\nError:Opcion no valida. Intentelo de Nuevo\n");
+                printf("\nError: Opcion no valida. Intentelo de Nuevo\n");
         }
     } while (opcion != 3);
 
@@ -76,7 +76,7 @@ void compararEstructuras(
     LIBT *libt, int *cantLIBT, Costos *costoLIBT,
     arbol *abb, int *cantABB, Costos *costoABB) {
 
-    limpiarTodo(cantLSO, costoLSO, libt, cantLIBT, costoLIBT, abb, cantABB, costoABB);
+    Inicializar(cantLSO, costoLSO, libt, cantLIBT, costoLIBT, abb, cantABB, costoABB);
 
     FILE *fp = fopen("Operaciones-Alumnos.txt", "r");
     if (fp == NULL) {
@@ -251,7 +251,7 @@ void procesarEvocacion(char* codigo,
 }
 
 
-void limpiarTodo(
+void Inicializar(
     int *cantLSO, Costos *costoLSO,
     LIBT *libt, int *cantLIBT, Costos *costoLIBT,
     arbol *abb, int *cantABB, Costos *costoABB) {
