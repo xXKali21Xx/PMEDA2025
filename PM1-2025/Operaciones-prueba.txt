@@ -1,0 +1,66 @@
+1
+0927A25
+Shannon, Claude
+0927A25@mailbox.edu.ar
+5
+Libre
+1
+0498A25
+Turing, Alan
+0498A25@mailbox.edu.ar
+0
+Ausente
+1
+0937A25
+Hopper, Grace
+0937A25@mailbox.edu.ar
+0
+Ausente
+1
+0797A25
+Snyder Holberton, Betty
+0797A25@mailbox.edu.ar
+8
+Promociona
+1
+0994A25
+Wescoff Meltzer, Marlyn
+0994A25@mailbox.edu.ar
+6
+Regular
+1
+0907A25
+Blanch, Gertrude
+0907A25@mailbox.edu.ar
+0
+Ausente
+2
+0994A25
+Wescoff Meltzer, Marlyn
+0994A25@mailbox.edu.ar
+6
+Regular
+2
+0937A25
+Hopper, Grace
+0937A25@mailbox.edu.ar
+0
+Ausente
+2
+0498A25
+Turing, Alan
+0498A25@mailbox.edu.ar
+0
+Ausente
+3
+0237A25
+3
+0877A25
+3
+0224A25
+3
+0233A25
+3
+0797A25
+3
+0927A25
