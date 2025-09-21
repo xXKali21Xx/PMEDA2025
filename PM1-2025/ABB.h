@@ -1,289 +1,210 @@
 #ifndef ABB_H_INCLUDED
 #define ABB_H_INCLUDED
 #include "LSO.h"
+#include <stdlib.h>
+
 typedef struct nodo{
-    Alumno dato; //dato del alumno
-    struct nodo *Derecha; //apunta al nodo derecho
-    struct nodo *izquierda; //apunta al nodo izquierdo
+    Alumno dato;
+    struct nodo *Derecha;
+    struct nodo *izquierda;
 }nodo;
 
 typedef struct{
-    nodo *raiz; //nodo raiz
-    nodo *aux; //nodo auxiliar
-    nodo *cursor; //cursor del nodo
-    int cant; //cantidad de elementos en el arbol
+    nodo *raiz;
+    int cant;
 }arbol;
 
-void init(arbol *a){ //inicializa el arbol
+void init(arbol *a){
     a->raiz = NULL;
-    a->cursor = NULL;
-    a->aux = NULL;
     a->cant = 0;
 }
 
 nodo* nuevonodoABB(Alumno x){
     nodo* n = (nodo*)malloc(sizeof(nodo));
     if(n == NULL){
-        return n; //caso de que no tenga memoria sale
+        return n;
     }
     n->dato = x;
     n->Derecha = NULL;
     n->izquierda= NULL;
-    return n; //caso que tenga memoria crea un nodo con izq y derecha nulos
+    return n;
 }
 
-arbol nuevoarbol(){
-    arbol a;
-    a.raiz = NULL;
-    a.aux = NULL;
-    a.cant = 0;
-    a.cursor = NULL;
-    return a;
-}
-void localizarABB(arbol *a, char cod[], int *exito, float *costo) {
-
-    if (a == NULL || a->raiz == NULL) {
-        *exito = 0;
-        return;
-    }
-
-    a->cursor = a->raiz;
-    a->aux = NULL;
-
-    while (a->cursor != NULL) {
-        *costo = *costo + 1;
-
-        int comparacion = strcmp(a->cursor->dato.codigo, cod);
-
-        if (comparacion == 0) {
-            *exito = 1;
-            return;
-        }
-
-        a->aux = a->cursor;
-
-        if (comparacion > 0) {
-            a->cursor = a->cursor->izquierda;
-        } else {
-            a->cursor = a->cursor->Derecha;
-        }
-    }
-
+void localizarABB(arbol *a, char cod[], int *exito, float *costo, nodo **cursor, nodo **padre) {
+    *padre = NULL;
+    *cursor = a->raiz;
     *exito = 0;
+
+    while (*cursor != NULL && !(*exito)) {
+        (*costo)++;
+        int comp = strcmpi(cod, (*cursor)->dato.codigo);
+        if (comp == 0) {
+            *exito = 1;
+        } else {
+            *padre = *cursor;
+            if (comp < 0) {
+                *cursor = (*cursor)->izquierda;
+            } else {
+                *cursor = (*cursor)->Derecha;
+            }
+        }
+    }
 }
 
-//funcion auxiliar
-int confirmacionbaja(arbol *a, arbol *b){ //compara dos nodos
-    if(strcmpi(a->cursor->dato.codigo,b->cursor->dato.codigo)==0){
-        if(strcmpi(a->cursor->dato.nombre,b->cursor->dato.nombre)==0){
-            if(strcmpi(a->cursor->dato.mail,b->cursor->dato.mail)==0){
-                if(strcmpi(a->cursor->dato.codigo,b->cursor->dato.codigo)==0){
-                    if(a->cursor->dato.nota == b->cursor->dato.nota){
-                        return 1; //son iguales
-                    }else{
-                        return 0;//no son iguales
-                    }
-                }else{
-                    return 0;
+int AltaABB(arbol *a, Alumno x, int *exito, float *costo, int *cant){
+    nodo *cursor = NULL, *padre = NULL;
+    float costoLocal = 0.0;
+    localizarABB(a, x.codigo, exito, &costoLocal, &cursor, &padre);
+    *costo += costoLocal;
+
+    if(*exito == 1){
+        *exito = 0; // Elemento ya existe
+        return 0;
+    } else {
+        nodo* nuevo = nuevonodoABB(x);
+        if(nuevo != NULL){
+            *costo += 0.5;
+            if(padre == NULL){
+                a->raiz = nuevo;
+            } else {
+                int comp = strcmpi(x.codigo, padre->dato.codigo);
+                if(comp > 0){
+                    padre->Derecha = nuevo;
+                } else {
+                    padre->izquierda = nuevo;
                 }
-            }else{
-                return 0;
             }
-        }else{
-            return 0;
-    }}else{
+            a->cant++;
+            if (cant != NULL) *cant = a->cant;
+            *exito = 1;
+            return 1;
+        } else {
+            *exito = -1; // Sin memoria
+            return -1;
+        }
+    }
+}
+
+int BajaABB(arbol *a, Alumno b, float *costo, int *exito){
+    nodo *cursor = NULL, *padre = NULL;
+    float costoLocal = 0.0;
+    localizarABB(a, b.codigo, exito, &costoLocal, &cursor, &padre);
+    *costo += costoLocal;
+
+    if(!(*exito)){
+        *exito = 0; // No encontrado
         return 0;
     }
-}
-int AltaABB(arbol *a, Alumno x, int *exito, float *costo, int *cant){
-    localizarABB(a,x.codigo,exito,costo);
-    if(exito == 1){
-        *exito = 0;
-    }else{
-        nodo* nuevo = nuevonodoABB(x);//creamos un nodo nuevo
-        if(nuevo != NULL){
-            if(a->raiz == NULL){// si la raiz no tiene valor se ingresa el dato como la raiz
-                a->raiz = nuevo;
-                a->cant = a->cant + 1;
-                *costo = *costo + 0.5;
-            }else{
-                if(a->aux->dato.codigo < x.codigo){// caso que sea mayor se ingresa a la derecha
-                    a->aux->Derecha = nuevo;
-                    a->cant = a->cant + 1;
-                    *costo = *costo + 0.5;
-                }else{// caso que sea menor se ingresa a la izquierda
-                    a->aux->izquierda = nuevo;
-                    a->cant = a->cant + 1;
-                    *costo = *costo + 0.5;
-                }
-            }
-        *exito = 1;
+
+    // Confirmacion por código
+    if(!(strcmpi(cursor->dato.nombre, b.nombre) == 0 &&
+         strcmpi(cursor->dato.mail, b.mail) == 0 &&
+         strcmpi(cursor->dato.condicion, b.condicion) == 0 &&
+         cursor->dato.nota == b.nota)){
+        *exito = 2; // Los datos no coinciden
+        return 2;
+    }
+
+    // Caso 1: Hoja
+    if(cursor->izquierda == NULL && cursor->Derecha == NULL){
+        if(cursor == a->raiz) a->raiz = NULL;
+        else if(padre->izquierda == cursor) padre->izquierda = NULL;
+        else padre->Derecha = NULL;
+        free(cursor);
+        *costo += 0.5; // Modificación de un puntero
+    }
+    // Caso 2: Un solo hijo (izquierdo)
+    else if(cursor->Derecha == NULL){
+        if(cursor == a->raiz) a->raiz = cursor->izquierda;
+        else if(padre->izquierda == cursor) padre->izquierda = cursor->izquierda;
+        else padre->Derecha = cursor->izquierda;
+        free(cursor);
+        *costo += 0.5;
+    }
+    // Caso 3: Un solo hijo (derecho)
+    else if(cursor->izquierda == NULL){
+        if(cursor == a->raiz) a->raiz = cursor->Derecha;
+        else if(padre->izquierda == cursor) padre->izquierda = cursor->Derecha;
+        else padre->Derecha = cursor->Derecha;
+        free(cursor);
+        *costo += 0.5;
+    }
+    // Caso 4: Dos hijos
+    else {
+        nodo *sucesor = cursor->izquierda;
+        nodo *padreSucesor = cursor;
+        while(sucesor->Derecha != NULL){
+            padreSucesor = sucesor;
+            sucesor = sucesor->Derecha;
+            *costo += 1.0;
         }
-    }
-}
-int BajaABB(arbol *a,arbol *b, char cod[],float *costo,int *exito){
-    //localizarABB(a,cod,exito,costo);
-    if(exito){
-        if(confirmacionbaja(a,b)==1){
-            //sin hijos
-            if(a->cursor->Derecha == NULL && a->cursor->izquierda == NULL){
-                if(a->cursor == a->raiz){ //es raiz
-                    a->raiz = NULL;
-                }
-            }else{
-                if(a->aux->izquierda == a->cursor){ //padre izq
-                    a->aux->izquierda = NULL;
-                }else{ //padre der
-                    a->aux->Derecha = NULL;
-                }
-            free((void*)(a->cursor));
-            *costo = *costo + 0.5;
-            a->cant--;
-            }
-            //con hijo izquierdo
-            if(a->cursor->Derecha == NULL && a->cursor->izquierda != NULL){
-            if(a->cursor == a->raiz){ //es raiz
-                a->raiz = a->cursor->izquierda;
-            }
-            if (a->aux->izquierda == a->cursor){ //padre izquierdo
-            a->aux->izquierda = a->cursor->izquierda;
-            }else{
-                a->aux->Derecha = a->cursor->izquierda; //padre dercho
-            }
-            free((void*)(a->cursor));
-            *costo = *costo + 0.5;
-            a->cant--;
-            }
-            //con hijo der
-            if(a->cursor->Derecha != NULL && a->cursor->izquierda == NULL){
-                if(a->cursor == a->raiz){
-                    a->raiz = a->cursor->Derecha;
-                }
-                if(a->aux->izquierda == a->cursor){ //padre izq
-                    a->aux->izquierda = a->cursor->Derecha;
-                }else{
-                    a->aux->Derecha = a->cursor->Derecha; //padre der
-                }
-                free((void*)(a->cursor));
-                *costo = *costo + 0.5;
-                a->cant--;
-            }
-            //con dos hijos
-            //Con dos hijo,Politica de Remplazo mayor de los menores
-            if(a->cursor->Derecha != NULL && a->cursor->izquierda != NULL){
-                nodo *mayor = a->cursor->izquierda; //apunta al hijo izquierdo
-                nodo *padremayor = a->cursor; //apunta al padre mayor
-
-                //busco el mayor dentro del arbol izquierdo
-                while(mayor->Derecha != NULL){
-                    padremayor = mayor;
-                    mayor = mayor->Derecha;
-                }
-
-                //copio los datos del mayor en el nodo que voy a eliminar del arbol
-                a->cursor->dato = mayor->dato;
-
-                //el mayor puede tener hijo izquierdo
-                if(padremayor->Derecha == mayor){ //mayor es hijo derecho
-                    padremayor->Derecha = mayor->izquierda;
-                }else{
-                    padremayor->izquierda = mayor->izquierda; //mayor era hijo izquierdo
-                }
-                free((void*)(mayor));
-                a->cant--;
-                *costo = *costo + 1.5;
-            }
-        }else{
-            *exito = 2; //no se pudo eliminar
-            return -1; //no coinciden los datos
+        cursor->dato = sucesor->dato;
+        if(padreSucesor == cursor){
+            padreSucesor->izquierda = sucesor->izquierda;
+        } else {
+            padreSucesor->Derecha = sucesor->izquierda;
         }
-    }else{
-        *exito = 0; //no se encontro el alumno
-        return -1;
+        free(sucesor);
+        *costo += 0.5;
     }
+
+    a->cant--;
+    *exito = 1;
+    return 1;
 }
 
-Alumno evocarABB(arbol *a, int *exito, float *costo, char cod[]){
-    int exitoL;//va con el localizar
-    Alumno *x;
-    //localizarABB
-    if(exito){
-        strcpy(x->mail, a->cursor->dato.mail);
-        strcpy(x->nombre, a->cursor->dato.nombre);
-        strcpy(x->codigo, a->cursor->dato.codigo);
-        strcpy(x->condicion, a->cursor->dato.condicion);
-        x->nota = a->cursor->dato.nota;
-        (*exito) = 1;
-        return *x; //devuelve el alumno encontrado
-    }else{
-        (*exito) = 0;
-        return *x; //devuelve un alumno vacio
+Alumno evocarABB(arbol *a, char cod[], int *exito, float *costo) {
+    nodo *cursor, *padre;
+    float costoLocal = 0.0;
+    localizarABB(a, cod, exito, &costoLocal, &cursor, &padre);
+    *costo += costoLocal;
+
+    if (*exito) {
+        return cursor->dato;
     }
+    Alumno vacio = {0};
+    return vacio;
 }
 
-int muestranodo(nodo *raiz){
+int muestranodo(nodo *raiz, int *contador){
     if(raiz == NULL){
-        return -1; //arbol vacio
+        return 0;
     }
-    //recorrido PRE-ORDEN
-    printf("----------------------------------------- \n");
-    printf("Nombre: %s\n", raiz->dato.nombre);
-    printf("Codigo: %s\n", raiz->dato.codigo);
-    printf("Mail: %s\n", raiz->dato.mail);
-    printf("Condicion: %s\n", raiz->dato.condicion);
-    printf("Nota: %d\n", raiz->dato.nota);
-    printf("----------------------------------------- \n");
 
-    muestranodo(raiz->izquierda);
-    muestranodo(raiz->Derecha);
+    printf("-----------------------------------------\n");
+    printf("  Nodo Codigo: %s (Nombre: %s)\n", raiz->dato.codigo, raiz->dato.nombre);
+    printf("  Mail: %s\n", raiz->dato.mail);
+    printf("  Condicion: %s, Nota: %d\n", raiz->dato.condicion, raiz->dato.nota);
+
+    if (raiz->izquierda != NULL) {
+        printf("  Hijo Izquierdo -> Codigo: %s\n", raiz->izquierda->dato.codigo);
+    } else {
+        printf("  Hijo Izquierdo -> NULL\n");
+    }
+
+    if (raiz->Derecha != NULL) {
+        printf("  Hijo Derecho   -> Codigo: %s\n", raiz->Derecha->dato.codigo);
+    } else {
+        printf("  Hijo Derecho   -> NULL\n");
+    }
+    (*contador)++;
+    if (*contador % 5 == 0) {
+        printf("Presione Enter para continuar...");
+        getchar();
+    }
+    muestranodo(raiz->izquierda, contador);
+    muestranodo(raiz->Derecha, contador);
+    return 1;
 }
 
 int muestraABB(arbol *a){
     if(a->raiz == NULL){
-        return -1;
-    }
-    printf("---- MUESTRA ARBOL ---- \n");
-    muestranodo(a->raiz);
-    return 1; //se mostro con exito
-}
-
-int precargarOperacionesABB(arbol *a,float *costo,int *exito) {
-    FILE *fp;
-    int eleccion;
-    Alumno aux;
-    if ((fp = fopen("Operaciones-Alumnos.txt", "r")==NULL) {
-        *exito = 0;
+        printf("El árbol está vacío.\n");
         return 0;
-    }else{
-    while (fscanf(fp, "%d", &eleccion) == 1) {
-        switch (eleccion) {
-            case 1:
-                fscanf(fp, " %[^\n]", aux.codigo);
-                fscanf(fp, " %[^\n]", aux.nombre);
-                fscanf(fp, " %[^\n]", aux.mail);
-                fscanf(fp, "%d", &aux.nota);
-                fscanf(fp, " %[^\n]", aux.condicion);
-                altaABB(a,aux,costo,exito);
-                break;
-
-            case 2:
-                fscanf(fp, " %[^\n]", aux.codigo);
-                fscanf(fp, " %[^\n]", aux.nombre);
-                fscanf(fp, " %[^\n]", aux.mail);
-                fscanf(fp, "%d", &aux.nota);
-                fscanf(fp, " %[^\n]", aux.condicion);
-                BajaABB(a,aux.codigo,costo,exito);
-                break;
-
-            case 3:
-                fscanf(fp, " %[^\n]", aux.codigo);
-                evocarABB(a,exito,costo,aux.codigo);
-                break;
-        }
-     }
     }
-    fclose(fp);
-    *exito 1;
+    printf("----- LISTA DE ALUMNOS ABB ----- \n");
+    int contador = 0;
+    muestranodo(a->raiz, &contador);
     return 1;
 }
 

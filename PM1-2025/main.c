@@ -1,177 +1,280 @@
+#include "LSO.h"
+#include "LIBT.h"
+#include "ABB.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "LSO.h"
-#include "ABB.h"
-int main()
-{
-    Alumno *alumnoLSO = (Alumno*)malloc(sizeof(Alumno)*130); // LSO
-    int cant = 0;
-    int exito = 0;
-    char codigo[7];
+#include <string.h>
 
-void mostrar_menu() {
-    printf("\n========================================\n");
-    printf("   SISTEMA DE GESTION DE ALUMNOS\n");
-    printf("   Estructura de Datos y Algoritmos I - 2025\n");
-    printf("========================================\n");
-    printf("1. Memorizacion Previa (cargar desde archivo)\n");
-    printf("2. Ingresar nuevo alumno\n");
-    printf("3. Eliminar alumno\n");
-    printf("4. Modificar datos de alumno\n");
-    printf("5. Consultar informacion de alumno\n");
-    printf("6. Mostrar Estructura completa\n");
-    printf("0. Salir\n");
-    printf("========================================\n");
-    printf("Seleccione una opcion: ");
-}
+typedef struct {
+    float total_alta, max_alta;
+    int contalta;
+    float total_baja, max_baja;
+    int contbaja;
+    float total_evoex, max_evoex;
+    int contevoex;
+    float total_evonoex, max_evonoex;
+    int contevonoex;
+} Costos;
 
-void limpiar_buffer() {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
-}
+void procesarAlta(Alumno data, Alumno lso[], int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
+void procesarBaja(Alumno data, Alumno lso[], int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, Costos *costoABB);
+void procesarEvocacion(char* codigo, Alumno lso[], int cantLSO, Costos *costoLSO, LIBT *libt, int cantLIBT, Costos *costoLIBT, arbol *abb, Costos *costoABB);
+
+void compararEstructuras(Alumno lso[], int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
+void mostrarResultados(int cantLSO, int cantLIBT, int cantABB, Costos costoLSO, Costos costoLIBT, Costos costoABB);
+void limpiarTodo(int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
+void free_abb_nodes(nodo *n);
+
+int main() {
+    Alumno lso[130];
+    LIBT libt;
+    arbol abb;
+    int cantLSO = 0, cantLIBT = 0, cantABB = 0;
+    Costos costoLSO, costoLIBT, costoABB;
+
+    init(&abb);
 
     int opcion;
-    int resultado;
-
     do {
-        mostrar_menu();
-        if (scanf("%d", &opcion) != 1) {
-            printf("\nError: Ingrese un numero valido.\n");
-            limpiar_buffer();
-            continue;
-        }
-        limpiar_buffer();
+        printf("\n+------------------------------+\n");
+        printf("|        MENU PRINCIPAL        |\n");
+        printf("+------------------------------+\n");
+        printf("| 1. Comparar Estructuras      |\n");
+        printf("| 2. Mostrar Contenidos        |\n");
+        printf("| 3. Salir del Programa        |\n");
+        printf("+------------------------------+\n");
+        printf("Ingrese su opcion: ");
+        scanf("%d", &opcion);
+        getchar();
 
-        switch(opcion) {
+        switch (opcion) {
             case 1:
-                printf("\n--- MEMORIZACION PREVIA ---\n");
-                resultado = memorizacion_previa(alumnoLSO,&cant,&exito);
-                printf("Cantidad de alumnos cargados: %d\n",cant);
-                if (resultado == 1) {
-                    printf("Archivo cargado exitosamente\n");
-                } else {
-                    printf("Error al cargar el archivo 'Alumnos.txt'\n");
-                }
+                compararEstructuras(lso, &cantLSO, &costoLSO, &libt, &cantLIBT, &costoLIBT, &abb, &cantABB, &costoABB);
+                mostrarResultados(cantLSO, cantLIBT, cantABB, costoLSO, costoLIBT, costoABB);
                 break;
-
             case 2:
-                printf("\n--- INGRESAR NUEVO ALUMNO ---\n");
-                Alumno aux;
-
-                printf("Ingrese el nombre y apellido del alumno \n");
-                scanf(" %[^\n]", aux.nombre);
-                fflush(stdin);
-                printf("Ingrese el mail del alumno \n");
-                scanf(" %[^\n]", aux.mail);
-                fflush(stdin);
-                printf("Ingrese el codigo del alumno\n");
-                scanf(" %[^\n]", aux.codigo);
-                fflush(stdin);
-                printf("Ingrese la condicion del alumno\n");
-                scanf(" %[^\n]", aux.condicion);
-                fflush(stdin);
-                printf("Ingrese la nota del alumno \n");
-                scanf("%d", &aux.nota);
-                fflush(stdin);
-
-                Alta(alumnoLSO,aux, &cant, &exito);
-               if(exito == -1){
-                printf("La lista esta llena \n");
-               }
-               if(exito == 0){
-                    printf("ya hay un alumno cargado con ese codigo \n");
-               }
-                if (exito == 1) {
-                    printf("Alumno ingresado exitosamente\n");
-                } else {
-                    printf("Error al ingresar el alumno\n");
-                }
+                printf("\n----- Contenido LSO -----\n");
+                muestralso(lso, cantLSO);
+                printf("\n----- Contenido LIBT -----\n");
+                muestralibt(&libt, cantLIBT);
+                printf("\n----- Contenido ABB  -----\n");
+                muestraABB(&abb);
                 break;
-
             case 3:
-                if(cant == 0){
-                    printf("no hay elementos en la lista \n");
-                    break;
-                }
-                printf("\n--- ELIMINAR ALUMNO ---\n");
-                printf("ingrese el codigo del alumno para eliminar\n");
-                scanf("%s", codigo);
-                Baja(alumnoLSO,codigo,&cant,&exito);
-                if (exito == 1) {
-                    printf("Alumno eliminado exitosamente\n");
-                } else {
-                    printf("NO se ha eliminado el alumno \n");
-                }
+                printf("\nUsted a Cerrado el Programa\n");
                 break;
-
-            case 4:
-                if(cant == 0){
-                    printf("no hay elementos en la lista \n");
-                    break;
-                }
-                printf("\n--- MODIFICAR ALUMNO ---\n");
-                printf("ingrese el codigo del alumno para modificar\n");
-                scanf("%s", codigo);
-                Modificar(alumnoLSO,&cant,codigo,&exito);
-                if (exito == 1) {
-                    printf("Datos del alumno modificados exitosamente\n");
-                } else {
-                        if(exito == 3){
-                            printf("Los datos del alumno no se modificaron\n");
-                        }else {
-                            printf("Error: no se encontro al alumno\n");
-                        }
-                }
-                break;
-
-            case 5: if (cant == 0) {
-                        printf("no hay elementos en la lista.\n");
-                        break;
-                    }
-                    printf("\n--- CONSULTAR ALUMNO ---\n");
-                    printf("Ingrese el codigo del alumno a consultar: \n");
-                    scanf("%s", codigo);
-                    limpiar_buffer();
-
-                    Alumno* alumno_encontrado = Evocar(alumnoLSO, &cant, codigo, &exito);
-
-                    if (exito == 1 && alumno_encontrado != NULL) {
-                        printf("\n=== INFORMACION DEL ALUMNO ===\n");
-                        printf("Codigo: %s\n", alumno_encontrado->codigo);
-                        printf("Nombre y Apellido: %s\n", alumno_encontrado->nombre);
-                        printf("Mail: %s\n", alumno_encontrado->mail);
-                        printf("Condicion: %s\n", alumno_encontrado->condicion);
-                        printf("Nota: %d\n", alumno_encontrado->nota);
-                        printf("================================\n");
-                    } else {
-                        printf("Error: Alumno no encontrado\n");
-                    }
-                    break;
-
-            case 6:
-                if(cant == 0){
-                    printf("No hay elementos en la lista \n");
-                    break;
-                }
-                printf("\n--- MOSTRAR ESTRUCTURA COMPLETA ---\n");
-                muestra(alumnoLSO,cant);
-                break;
-
-            case 0:
-                printf("\nUsted a cerrado el programa correctamente\n");
-                break;
-
             default:
-                printf("\nOpcion no valida. Por favor seleccione una opcion del 0 al 6\n");
-                break;
+                printf("\nError:Opcion no valida. Intentelo de Nuevo\n");
         }
-
-        if (opcion != 0) {
-            printf("\nPresione Enter para continuar...");
-            getchar();
-        }
-
-    } while(opcion != 0);
+    } while (opcion != 3);
 
     return 0;
+}
+
+void compararEstructuras(
+    Alumno lso[], int *cantLSO, Costos *costoLSO,
+    LIBT *libt, int *cantLIBT, Costos *costoLIBT,
+    arbol *abb, int *cantABB, Costos *costoABB) {
+
+    limpiarTodo(cantLSO, costoLSO, libt, cantLIBT, costoLIBT, abb, cantABB, costoABB);
+
+    FILE *fp = fopen("Operaciones-Alumnos.txt", "r");
+    if (fp == NULL) {
+        printf("Error: No se pudo abrir 'Operaciones-Alumnos.txt'\n");
+        return;
+    }
+
+    int operacion;
+    Alumno alumnoTemp;
+    char codigoBuffer[8];
+
+    while (fscanf(fp, "%d\n", &operacion) == 1) {
+        switch (operacion) {
+            case 1: // Alta
+                fscanf(fp, "%[^\n]\n%[^\n]\n%[^\n]\n%d\n%[^\n]\n",
+                       alumnoTemp.codigo, alumnoTemp.nombre, alumnoTemp.mail, &alumnoTemp.nota, alumnoTemp.condicion);
+                procesarAlta(alumnoTemp, lso, cantLSO, costoLSO, libt, cantLIBT, costoLIBT, abb, cantABB, costoABB);
+                break;
+            case 2: // Baja
+                fscanf(fp, "%[^\n]\n%[^\n]\n%[^\n]\n%d\n%[^\n]\n",
+                       alumnoTemp.codigo, alumnoTemp.nombre, alumnoTemp.mail, &alumnoTemp.nota, alumnoTemp.condicion);
+                procesarBaja(alumnoTemp, lso, cantLSO, costoLSO, libt, cantLIBT, costoLIBT, abb, costoABB);
+                break;
+            case 3: // Evocación
+                fscanf(fp, "%[^\n]\n", codigoBuffer);
+                procesarEvocacion(codigoBuffer, lso, *cantLSO, costoLSO, libt, *cantLIBT, costoLIBT, abb, costoABB);
+                break;
+        }
+    }
+    fclose(fp);
+    printf("Archivo Procesado\n");
+}
+
+void mostrarResultados(int cantLSO, int cantLIBT, int cantABB, Costos lso, Costos libt, Costos abb) {
+    printf("\n+-----------------------------------------------------------+\n");
+    printf("|          CUADRO COMPARATIVO DE COSTOS                     |\n");
+    printf("+-----------------------------------------------------------+\n");
+    printf("| ESTRUCTURA           | %-8s | %-8s | %-8s |   |\n", "LSO", "LIBT", "ABB");
+    printf("+-----------------------------------------------------------+\n");
+    printf("| OPERACIONES DE ALTA                                       |\n");
+    printf("+-----------------------------------------------------------+\n");
+    printf("| Costo Maximo         | %-8.2f | %-8.2f | %-8.2f |   |\n", lso.max_alta, libt.max_alta, abb.max_alta);
+    printf("| Costo Promedio       | %-8.2f | %-8.2f | %-8.2f |   |\n", (lso.contalta > 0 ? lso.total_alta / lso.contalta : 0), (libt.contalta > 0 ? libt.total_alta / libt.contalta : 0), (abb.contalta > 0 ? abb.total_alta / abb.contalta : 0));
+    printf("+-----------------------------------------------------------+\n");
+    printf("| OPERACIONES DE BAJA                                       |\n");
+    printf("+-----------------------------------------------------------+\n");
+    printf("| Costo Maximo         | %-8.2f | %-8.2f | %-8.2f |   |\n", lso.max_baja, libt.max_baja, abb.max_baja);
+    printf("| Costo Promedio       | %-8.2f | %-8.2f | %-8.2f |   |\n", (lso.contbaja > 0 ? lso.total_baja / lso.contbaja : 0), (libt.contbaja > 0 ? libt.total_baja / libt.contbaja : 0), (abb.contbaja > 0 ? abb.total_baja / abb.contbaja : 0));
+    printf("+-----------------------------------------------------------+\n");
+    printf("| BUSQUEDAS EXITOSAS (EVOEX)                                |\n");
+    printf("+----------------------+----------+----------+--------------+\n");
+    printf("| Costo Maximo         | %-8.2f | %-8.2f | %-8.2f |   |\n", lso.max_evoex, libt.max_evoex, abb.max_evoex);
+    printf("| Costo Promedio       | %-8.2f | %-8.2f | %-8.2f |   |\n", (lso.contevoex > 0 ? lso.total_evoex / lso.contevoex : 0), (libt.contevoex > 0 ? libt.total_evoex / libt.contevoex : 0), (abb.contevoex > 0 ? abb.total_evoex / abb.contevoex : 0));
+    printf("+-----------------------------------------------------------+\n");
+    printf("| BUSQUEDAS FALLIDAS (EVONOEX)                              |\n");
+    printf("+-----------------------------------------------------------+\n");
+    printf("| Costo Maximo         | %-8.2f | %-8.2f | %-8.2f |   |\n", lso.max_evonoex, libt.max_evonoex, abb.max_evonoex);
+    printf("| Costo Promedio       | %-8.2f | %-8.2f | %-8.2f |   |\n", (lso.contevonoex > 0 ? lso.total_evonoex / lso.contevonoex : 0), (libt.contevonoex > 0 ? libt.total_evonoex / libt.contevonoex : 0), (abb.contevonoex > 0 ? abb.total_evonoex / abb.contevonoex : 0));
+    printf("+-----------------------------------------------------------+\n");
+    printf("| Alumnos Finales      | %-8d | %-8d | %-8d |   |\n", cantLSO, cantLIBT, cantABB);
+    printf("+-----------------------------------------------------------+\n");
+}
+
+//Funciones auxiliares
+
+void procesarAlta(Alumno data,
+    Alumno lso[], int *cantLSO, Costos *costoLSO,
+    LIBT *libt, int *cantLIBT, Costos *costoLIBT,
+    arbol *abb, int *cantABB, Costos *costoABB) {
+
+    int exito;
+    float costo;
+
+    // LSO
+    costo = 0.0;
+    Alta(lso, data, cantLSO, &exito, &costo);
+    costoLSO->total_alta += costo;
+    costoLSO->contalta++;
+    if (costo > costoLSO->max_alta) costoLSO->max_alta = costo;
+
+    // LIBT
+    costo = 0.0;
+    AltaLI(libt, data, cantLIBT, &exito, &costo);
+    costoLIBT->total_alta += costo;
+    costoLIBT->contalta++;
+    if (costo > costoLIBT->max_alta) costoLIBT->max_alta = costo;
+
+    // ABB
+    costo = 0.0;
+    AltaABB(abb, data, &exito, &costo, cantABB);
+    costoABB->total_alta += costo;
+    costoABB->contalta++;
+    if (costo > costoABB->max_alta) costoABB->max_alta = costo;
+}
+
+
+void procesarBaja(Alumno data,
+    Alumno lso[], int *cantLSO, Costos *costoLSO,
+    LIBT *libt, int *cantLIBT, Costos *costoLIBT,
+    arbol *abb, Costos *costoABB) {
+
+    int exito;
+    float costo;
+
+    // LSO
+    costo = 0.0;
+    Baja(lso, data, cantLSO, &exito, &costo);
+    costoLSO->total_baja += costo;
+    costoLSO->contbaja++;
+    if (costo > costoLSO->max_baja) costoLSO->max_baja = costo;
+
+    // LIBT
+    costo = 0.0;
+    BajaLI(libt, data, cantLIBT, &exito, &costo);
+    costoLIBT->total_baja += costo;
+    costoLIBT->contbaja++;
+    if (costo > costoLIBT->max_baja) costoLIBT->max_baja = costo;
+
+    // ABB
+    costo = 0.0;
+    BajaABB(abb, data, &costo, &exito);
+    costoABB->total_baja += costo;
+    costoABB->contbaja++;
+    if (costo > costoABB->max_baja) costoABB->max_baja = costo;
+}
+
+
+void procesarEvocacion(char* codigo,
+    Alumno lso[], int cantLSO, Costos *costoLSO,
+    LIBT *libt, int cantLIBT, Costos *costoLIBT,
+    arbol *abb, Costos *costoABB) {
+
+    int exito;
+    float costo;
+
+    // LSO
+    costo = 0.0;
+    Evocar(lso, &cantLSO, codigo, &exito, &costo);
+    if (exito == 1) {
+        costoLSO->total_evoex += costo;
+        costoLSO->contevoex++;
+        if (costo > costoLSO->max_evoex) costoLSO->max_evoex = costo;
+    } else {
+        costoLSO->total_evonoex += costo;
+        costoLSO->contevonoex++;
+        if (costo > costoLSO->max_evonoex) costoLSO->max_evonoex = costo;
+    }
+    //LIBT
+    costo = 0.0;
+    evocar(libt, codigo, &exito, &costo, cantLIBT);
+    if (exito == 1) {
+        costoLIBT->total_evoex += costo;
+        costoLIBT->contevoex++;
+        if (costo > costoLIBT->max_evoex) costoLIBT->max_evoex = costo;
+    } else {
+        costoLIBT->total_evonoex += costo;
+        costoLIBT->contevonoex++;
+        if (costo > costoLIBT->max_evonoex) costoLIBT->max_evonoex = costo;
+    }
+    //ABB
+    costo = 0.0;
+    evocarABB(abb, codigo, &exito, &costo);
+    if (exito == 1) {
+        costoABB->total_evoex += costo;
+        costoABB->contevoex++;
+        if (costo > costoABB->max_evoex) costoABB->max_evoex = costo;
+    } else {
+        costoABB->total_evonoex += costo;
+        costoABB->contevonoex++;
+        if (costo > costoABB->max_evonoex) costoABB->max_evonoex = costo;
+    }
+}
+
+
+void limpiarTodo(
+    int *cantLSO, Costos *costoLSO,
+    LIBT *libt, int *cantLIBT, Costos *costoLIBT,
+    arbol *abb, int *cantABB, Costos *costoABB) {
+
+    *cantLSO = 0;
+    memset(costoLSO, 0, sizeof(Costos));
+
+    for (int i = 0; i < *cantLIBT; i++) {
+        if (libt->alumnoslibt[i] != NULL) free(libt->alumnoslibt[i]);
+    }
+    libt->ultimo = -1;
+    *cantLIBT = 0;
+    memset(costoLIBT, 0, sizeof(Costos));
+
+    free_abb_nodes(abb->raiz);
+    init(abb);
+    *cantABB = 0;
+    memset(costoABB, 0, sizeof(Costos));
+}
+
+void free_abb_nodes(nodo *n) {
+    if (n == NULL) return;
+    free_abb_nodes(n->izquierda);
+    free_abb_nodes(n->Derecha);
+    free(n);
 }
