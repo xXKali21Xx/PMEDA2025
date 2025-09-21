@@ -7,7 +7,7 @@ typedef struct{
     char nombre[80];
     char mail[24];
     char codigo[8];
-    char condicion[11]; // CORREGIDO: de 10 a 11 para el char nulo '\0'
+    char condicion[11];
     int nota;
 }Alumno;
 
@@ -37,7 +37,7 @@ int localizar(Alumno lista[], int *cant, char cod[], int *exito, int *pos, float
             *pos = i;
         }
     } else {
-        *exito = 0; // No encontrado, insertar al final
+        *exito = 0;
         *pos = i;
     }
     return *exito;
@@ -49,7 +49,7 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
     float costoLocal = 0.0;
 
     if(*cant >= 130){
-        *exito = -1; // Lista llena
+        *exito = -1;
         return *exito;
     }
 
@@ -57,11 +57,9 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
     *costo += costoLocal;
 
     if(*exito == 1){
-        *exito = 0; // Elemento ya existe
+        *exito = 0;
     } else {
-        // Calcular costo de corrimiento
         int shifts = (*cant) - pos;
-        // CORREGIDO: Costo de corrimiento de tupla es 1
         *costo += shifts * 1.0;
 
         // Realizar corrimientos
@@ -82,7 +80,7 @@ int Baja(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
     float costoLocal = 0.0;
 
     if(*cant == 0){
-        *exito = 0; // Lista vacía
+        *exito = 0;
         return *exito;
     }
 
@@ -90,15 +88,13 @@ int Baja(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
     *costo += costoLocal;
 
     if(*exito == 0){
-        *exito = 2; // No se encontró
+        *exito = 2;
     } else {
-        // Confirmación por código comparando toda la tupla [cite: 73]
         if(strcmpi(lista[pos].nombre, x.nombre) == 0 &&
            strcmpi(lista[pos].mail, x.mail) == 0 &&
            strcmpi(lista[pos].condicion, x.condicion) == 0 &&
            lista[pos].nota == x.nota)
         {
-            // El costo de corrimiento es 1 por tupla
             *costo += (*cant) - 1 - pos;
 
             for(i = pos; i < (*cant)-1; i++){
@@ -107,7 +103,7 @@ int Baja(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
             (*exito) = 1; // Borrado exitoso
             (*cant)--;
         } else {
-            *exito = 3; // Los datos no coinciden, no se borra
+            *exito = 3;
         }
     }
     return *exito;
@@ -131,7 +127,7 @@ Alumno* Evocar(Alumno lista[], int *cant, char cod[], int *exito, float *costo) 
 void muestralso(Alumno lista[], int cant){
     int i = 0;
     printf("----- LISTA DE ALUMNOS LSO ----- \n");
-    if(cant == 0) printf("La lista está vacía.\n");
+    if(cant == 0) printf("Error:La lista esta vacia\n");
     while(i < cant){
         printf("Alumno %d:\n", i + 1);
         printf("  Nombre y Apellido: %s \n", lista[i].nombre );

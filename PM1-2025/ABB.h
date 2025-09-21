@@ -111,7 +111,7 @@ int BajaABB(arbol *a, Alumno b, float *costo, int *exito){
         else if(padre->izquierda == cursor) padre->izquierda = NULL;
         else padre->Derecha = NULL;
         free(cursor);
-        *costo += 0.5; // Modificación de un puntero
+        *costo += 0.5;
     }
     // Caso 2: Un solo hijo (izquierdo)
     else if(cursor->Derecha == NULL){
@@ -199,7 +199,7 @@ int muestranodo(nodo *raiz, int *contador){
 
 int muestraABB(arbol *a){
     if(a->raiz == NULL){
-        printf("El árbol está vacío.\n");
+        printf("Error:El Arbol esta vacio\n");
         return 0;
     }
     printf("----- LISTA DE ALUMNOS ABB ----- \n");

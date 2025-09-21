@@ -154,7 +154,7 @@ Alumno* evocar(LIBT *lista, char cod[], int *exito, float *costo, int cant){
 void muestralibt(LIBT *lista, int cant){
     int i = 0;
     printf("----- LISTA DE ALUMNOS LIBT ----- \n");
-    if(cant == 0) printf("La lista está vacía.\n");
+    if(cant == 0) printf("Error:La lista esta vacia\n");
     while(i < cant){
         printf("  Alumno %d:\n", i + 1);
         printf("  Nombre y Apellido: %s \n", lista->alumnoslibt[i]->nombre);
