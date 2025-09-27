@@ -19,14 +19,6 @@ typedef struct {
     int contevonoex;
 } Costos;
 
-void procesarAlta(Alumno data, Alumno lso[], int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
-void procesarBaja(Alumno data, Alumno lso[], int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, Costos *costoABB);
-void procesarEvocacion(char* codigo, Alumno lso[], int cantLSO, Costos *costoLSO, LIBT *libt, int cantLIBT, Costos *costoLIBT, arbol *abb, Costos *costoABB);
-
-void compararEstructuras(Alumno lso[], int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
-void mostrarResultados(int cantLSO, int cantLIBT, int cantABB, Costos costoLSO, Costos costoLIBT, Costos costoABB);
-void Inicializar(int *cantLSO, Costos *costoLSO, LIBT *libt, int *cantLIBT, Costos *costoLIBT, arbol *abb, int *cantABB, Costos *costoABB);
-void free_abb_nodes(nodo *n);
 void initcosto(costo a[]){
     int i;
     for(i=0;i<2;i++){

@@ -10,54 +10,66 @@ typedef struct
 } LIBT;
 
 void localizarLIBT(LIBT *lista, char codigo[], int *exito, float *costo, int cant, int *pos) {
+    *costo = 0.0;
+    *exito = 0;
+
     if (cant == 0) {
-        *exito = 0;
         *pos = 0;
         return;
     }
 
-    int li = 0, ls = cant - 1;
-    int m1, m2;
+    int li = 0;
+    int ls = cant - 1;
+    int medio1, medio2;
 
     while (li <= ls) {
-        int tercio = (ls - li + 1) / 3;
-        m1 = li + tercio;
-        m2 = ls - tercio;
+        medio1 = li + (ls - li) / 3;
+        medio2 = ls - (ls - li) / 3;
 
-        *costo += 1;
-        int comp1 = strcmpi(codigo, lista->alumnoslibt[m1]->codigo);
+        if (medio1 >= medio2) {
+            medio1 = li + (ls - li) / 2;
+
+            (*costo) += 1.0;
+            int comp = strcmpi(codigo, lista->alumnoslibt[medio1]->codigo);
+
+            if (comp == 0) {
+                *pos = medio1;
+                *exito = 1;
+                return;
+            } else if (comp < 0) {
+                ls = medio1 - 1;
+            } else {
+                li = medio1 + 1;
+            }
+            continue;
+        }
+
+        (*costo) += 1.0;
+        int comp1 = strcmpi(codigo, lista->alumnoslibt[medio1]->codigo);
 
         if (comp1 == 0) {
-            *pos = m1;
+            *pos = medio1;
+            *exito = 1;
+            return;
+        }
+        (*costo) += 1.0;
+        int comp2 = strcmpi(codigo, lista->alumnoslibt[medio2]->codigo);
+
+        if (comp2 == 0) {
+            *pos = medio2;
             *exito = 1;
             return;
         }
 
         if (comp1 < 0) {
-            ls = m1 - 1;
+            ls = medio1 - 1;
+        } else if (comp2 > 0) {
+            li = medio2 + 1;
         } else {
-            // Solo consultar m2 si es necesario y válido
-            if (m2 > m1) {
-                *costo += 1;
-                int comp2 = strcmpi(codigo, lista->alumnoslibt[m2]->codigo);
-                if (comp2 == 0) {
-                    *pos = m2;
-                    *exito = 1;
-                    return;
-                }
-                if (comp2 < 0) {
-                    li = m1 + 1;
-                    ls = m2 - 1;
-                } else {
-                    li = m2 + 1;
-                }
-            } else {
-                 li = m1 + 1;
-            }
+            li = medio1 + 1;
+            ls = medio2 - 1;
         }
     }
-
-    *exito = 0;
     *pos = li;
 }
 
@@ -72,7 +84,6 @@ int AltaLI(LIBT *lista, Alumno x, int *cant, int *exito, float *costo){
     }
 
     localizarLIBT(lista, x.codigo, exito, &costoLocal, *cant, &pos);
-    *costo += costoLocal;
 
     if(*exito == 1){
         *exito = 0; // Elemento ya existe
@@ -106,7 +117,6 @@ int BajaLI(LIBT *lista, Alumno x, int *cant, int *exito, float *costo){
     float costoLocal = 0.0;
 
     localizarLIBT(lista, x.codigo, exito, &costoLocal, *cant, &pos);
-    *costo += costoLocal;
 
     if(*exito == 0){
         *exito = 2; // Elemento no encontrado

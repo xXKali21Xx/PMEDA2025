@@ -55,7 +55,6 @@ int AltaABB(arbol *a, Alumno x, int *exito, float *costo, int *cant){
     nodo *cursor = NULL, *padre = NULL;
     float costoLocal = 0.0;
     localizarABB(a, x.codigo, exito, &costoLocal, &cursor, &padre);
-    *costo += costoLocal;
 
     if(*exito == 1){
         *exito = 0; // Elemento ya existe
@@ -89,7 +88,6 @@ int BajaABB(arbol *a, Alumno b, float *costo, int *exito){
     nodo *cursor = NULL, *padre = NULL;
     float costoLocal = 0.0;
     localizarABB(a, b.codigo, exito, &costoLocal, &cursor, &padre);
-    *costo += costoLocal;
 
     if(!(*exito)){
         *exito = 0; // No encontrado

@@ -54,15 +54,10 @@ int Alta(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
     }
 
     localizar(lista, cant, x.codigo, exito, &pos, &costoLocal);
-    *costo += costoLocal;
 
     if(*exito == 1){
         *exito = 0;
     } else {
-        int shifts = (*cant) - pos;
-        //*costo += shifts * 1.0;
-
-        // Realizar corrimientos
         for(i = (*cant); i > pos; i--){
             lista[i] = lista[i-1];
             (*costo) = (*costo) + 1;
@@ -86,7 +81,6 @@ int Baja(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
     }
 
     localizar(lista, cant, x.codigo, exito, &pos, &costoLocal);
-    *costo += costoLocal;
 
     if(*exito == 0){
         *exito = 2;
@@ -96,8 +90,6 @@ int Baja(Alumno lista[], Alumno x, int *cant, int *exito, float *costo){
            strcmpi(lista[pos].condicion, x.condicion) == 0 &&
            lista[pos].nota == x.nota)
         {
-            //*costo += (*cant) - 1 - pos;
-
             for(i = pos; i < (*cant)-1; i++){
                 lista[i] = lista[i+1];
                 (*costo) = (*costo) + 1;
