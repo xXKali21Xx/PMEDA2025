@@ -99,7 +99,6 @@ int AltaLI(LIBT *lista, Alumno x, int *cant, int *exito, float *costo){
         // Corrimiento de punteros
         for(i = (*cant); i > pos; i--){
             lista->alumnoslibt[i] = lista->alumnoslibt[i-1];
-            // CORREGIDO: costo por corrimiento de puntero es 0.5
             (*costo) += 0.5;
         }
 

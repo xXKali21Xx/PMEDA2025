@@ -30,19 +30,20 @@
 	"string.h"
 	"stdio.h"
 
-1758435803 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
+1758501787 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
 	"LSO.h"
 	"LIBT.h"
 	"ABB.h"
+	"Comparaciones.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1758435950 c:\users\administrator\documents\github\pmeda2025\pm1-2025\lso.h
+1759004979 c:\users\administrator\documents\github\pmeda2025\pm1-2025\lso.h
 	"string.h"
 	"stdio.h"
 
-1758435950 c:\users\administrator\documents\github\pmeda2025\pm1-2025\abb.h
+1759005067 c:\users\administrator\documents\github\pmeda2025\pm1-2025\abb.h
 	"LSO.h"
 	<stdlib.h>
 
@@ -50,7 +51,7 @@
 	"LSO.h"
 	<stdlib.h>
 
-1758435803 c:\users\administrator\documents\github\pmeda2025\pm1-2025\libt.h
+1759009954 c:\users\administrator\documents\github\pmeda2025\pm1-2025\libt.h
 	"LSO.h"
 	<stdlib.h>
 
@@ -59,4 +60,6 @@
 	<stdlib.h>
 
 1758487709 c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\comparaciones.h
+
+1759009953 c:\users\administrator\documents\github\pmeda2025\pm1-2025\comparaciones.h
 
