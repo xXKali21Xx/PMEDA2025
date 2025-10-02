@@ -1,3 +1,46 @@
+/*
+  Conclusion del Analisis de Rendimiento:
+
+  ABB (Ganador): Es la más eficiente en todos los aspectos. Su costo de alta es mínimo (0.50)
+  al no requerir corrimientos. La baja y la búsqueda son muy eficientes gracias a su
+  complejidad logarítmica O(log n).
+
+  LIBT (Intermedio): Representa una mejora clara respecto a la LSO gracias a su búsqueda
+  binaria O(log n), pero su rendimiento en altas y bajas se ven afectadas por el costo
+  de corrimiento de punteros.
+
+  LSO (Menos eficiente): Es la estructura con el peor rendimiento debido a
+  su búsqueda secuencial O(n) y el alto costo de desplazar registros
+  completos en cada operación del alta o baja.
+
+   +-----------------------------------------------------------+
+   |          CUADRO COMPARATIVO DE COSTOS                     |
+   +-----------------------------------------------------------+
+   | ESTRUCTURA           | LSO      | LIBT     | ABB      |   |
+   +-----------------------------------------------------------+
+   | OPERACIONES DE ALTA                                       |
+   +-----------------------------------------------------------+
+   | Costo Maximo         | 91.00    | 45.50    | 0.50     |   |
+   | Costo Promedio       | 23.01    | 11.51    | 0.50     |   |
+   +-----------------------------------------------------------+
+   | OPERACIONES DE BAJA                                       |
+   +-----------------------------------------------------------+
+   | Costo Maximo         | 91.00    | 45.50    | 7.50     |   |
+   | Costo Promedio       | 22.38    | 11.19    | 1.11     |   |
+   +-----------------------------------------------------------+
+   | BUSQUEDAS EXITOSAS (EVOEX)                                |
+   +----------------------+----------+----------+--------------+
+   | Costo Maximo         | 100.00   | 14.00    | 12.00    |   |
+   | Costo Promedio       | 45.13    | 11.07    | 6.43     |   |
+   +-----------------------------------------------------------+
+   | BUSQUEDAS FALLIDAS (EVONOEX)                              |
+   +-----------------------------------------------------------+
+   | Costo Maximo         | 71.00    | 14.00    | 11.00    |   |
+   | Costo Promedio       | 24.18    | 10.26    | 5.85     |   |
+   +-----------------------------------------------------------+
+   | Alumnos Finales      | 71       | 71       | 71       |   |
+   +-----------------------------------------------------------+
+ */
 #include "LSO.h"
 #include "LIBT.h"
 #include "ABB.h"

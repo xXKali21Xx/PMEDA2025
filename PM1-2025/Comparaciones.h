@@ -55,23 +55,29 @@ void procesarAlta(Alumno data,
     // LSO
     costo = 0.0;
     Alta(lso, data, cantLSO, &exito, &costo);
-    costoLSO->total_alta += costo;
-    costoLSO->contalta++;
-    if (costo > costoLSO->max_alta) costoLSO->max_alta = costo;
+    if (exito == 1) {
+        costoLSO->total_alta += costo;
+        costoLSO->contalta++;
+        if (costo > costoLSO->max_alta) costoLSO->max_alta = costo;
+    }
 
     // LIBT
     costo = 0.0;
     AltaLI(libt, data, cantLIBT, &exito, &costo);
-    costoLIBT->total_alta += costo;
-    costoLIBT->contalta++;
-    if (costo > costoLIBT->max_alta) costoLIBT->max_alta = costo;
+    if (exito == 1) {
+        costoLIBT->total_alta += costo;
+        costoLIBT->contalta++;
+        if (costo > costoLIBT->max_alta) costoLIBT->max_alta = costo;
+    }
 
     // ABB
     costo = 0.0;
     AltaABB(abb, data, &exito, &costo, cantABB);
-    costoABB->total_alta += costo;
-    costoABB->contalta++;
-    if (costo > costoABB->max_alta) costoABB->max_alta = costo;
+    if (exito == 1) {
+        costoABB->total_alta += costo;
+        costoABB->contalta++;
+        if (costo > costoABB->max_alta) costoABB->max_alta = costo;
+    }
 }
 
 
@@ -86,23 +92,29 @@ void procesarBaja(Alumno data,
     // LSO
     costo = 0.0;
     Baja(lso, data, cantLSO, &exito, &costo);
-    costoLSO->total_baja += costo;
-    costoLSO->contbaja++;
-    if (costo > costoLSO->max_baja) costoLSO->max_baja = costo;
+    if (exito == 1) {
+        costoLSO->total_baja += costo;
+        costoLSO->contbaja++;
+        if (costo > costoLSO->max_baja) costoLSO->max_baja = costo;
+    }
 
     // LIBT
     costo = 0.0;
     BajaLI(libt, data, cantLIBT, &exito, &costo);
-    costoLIBT->total_baja += costo;
-    costoLIBT->contbaja++;
-    if (costo > costoLIBT->max_baja) costoLIBT->max_baja = costo;
+    if (exito == 1) {
+        costoLIBT->total_baja += costo;
+        costoLIBT->contbaja++;
+        if (costo > costoLIBT->max_baja) costoLIBT->max_baja = costo;
+    }
 
     // ABB
     costo = 0.0;
     BajaABB(abb, data, &costo, &exito);
-    costoABB->total_baja += costo;
-    costoABB->contbaja++;
-    if (costo > costoABB->max_baja) costoABB->max_baja = costo;
+    if (exito == 1) {
+        costoABB->total_baja += costo;
+        costoABB->contbaja++;
+        if (costo > costoABB->max_baja) costoABB->max_baja = costo;
+    }
 }
 
 

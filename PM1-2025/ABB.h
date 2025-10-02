@@ -94,7 +94,7 @@ int BajaABB(arbol *a, Alumno b, float *costo, int *exito){
         return 0;
     }
 
-    // Confirmacion por código
+    // Confirmación por código
     if(!(strcmpi(cursor->dato.nombre, b.nombre) == 0 &&
          strcmpi(cursor->dato.mail, b.mail) == 0 &&
          strcmpi(cursor->dato.condicion, b.condicion) == 0 &&
