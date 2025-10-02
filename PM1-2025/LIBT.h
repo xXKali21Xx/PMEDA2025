@@ -9,69 +9,41 @@ typedef struct
     int ultimo;
 } LIBT;
 
-void localizarLIBT(LIBT *lista, char codigo[], int *exito, float *costo, int cant, int *pos) {
-    *costo = 0.0;
-    *exito = 0;
 
-    if (cant == 0) {
-        *pos = 0;
-        return;
+int localizarLIBT(LIBT lista[], char codigo[], int *exito, float *costo, int cant, int *pos){
+    int li = 0, ls = cant - 1;
+    int t;
+
+    if (cant == 0){ //lista vacia
+        (*exito) = -1;
+        (*pos) = 0;
+        return -1;
     }
 
-    int li = 0;
-    int ls = cant - 1;
-    int medio1, medio2;
+    t = (li + ls+1) / 2;
 
-    while (li <= ls) {
-        medio1 = li + (ls - li) / 3;
-        medio2 = ls - (ls - li) / 3;
-
-        if (medio1 >= medio2) {
-            medio1 = li + (ls - li) / 2;
-
-            (*costo) += 1.0;
-            int comp = strcmpi(codigo, lista->alumnoslibt[medio1]->codigo);
-
-            if (comp == 0) {
-                *pos = medio1;
-                *exito = 1;
-                return;
-            } else if (comp < 0) {
-                ls = medio1 - 1;
-            } else {
-                li = medio1 + 1;
-            }
-            continue;
+    while((li <= ls) && strcmpi(lista->alumnoslibt[t]->codigo, codigo) != 0){
+        if(strcmpi(lista->alumnoslibt[t]->codigo, codigo) < 0){
+            li = t + 1;
+        }else{
+            ls = t - 1;
         }
-
-        (*costo) += 1.0;
-        int comp1 = strcmpi(codigo, lista->alumnoslibt[medio1]->codigo);
-
-        if (comp1 == 0) {
-            *pos = medio1;
-            *exito = 1;
-            return;
-        }
-        (*costo) += 1.0;
-        int comp2 = strcmpi(codigo, lista->alumnoslibt[medio2]->codigo);
-
-        if (comp2 == 0) {
-            *pos = medio2;
-            *exito = 1;
-            return;
-        }
-
-        if (comp1 < 0) {
-            ls = medio1 - 1;
-        } else if (comp2 > 0) {
-            li = medio2 + 1;
-        } else {
-            li = medio1 + 1;
-            ls = medio2 - 1;
-        }
+        (*costo) += 2;
+        t = (li + ls+1) / 2;
     }
-    *pos = li;
+
+    if(li <= ls ){
+        (*exito) = 1;
+        (*pos) = t;
+        (*costo) += 2;
+        return (*exito);
+    }else{
+        (*pos) = li;
+        (*exito) = 0;
+        return (*exito);
+    }
 }
+
 
 int AltaLI(LIBT *lista, Alumno x, int *cant, int *exito, float *costo){
     int pos = 0;
@@ -121,7 +93,7 @@ int BajaLI(LIBT *lista, Alumno x, int *cant, int *exito, float *costo){
         *exito = 2; // Elemento no encontrado
         return 2;
     } else {
-        // Confirmación por código comparando toda la tupla
+        // Confirmaciï¿½n por cï¿½digo comparando toda la tupla
         if(strcmpi(lista->alumnoslibt[pos]->nombre, x.nombre) == 0 &&
            strcmpi(lista->alumnoslibt[pos]->mail, x.mail) == 0 &&
            strcmpi(lista->alumnoslibt[pos]->condicion, x.condicion) == 0 &&
