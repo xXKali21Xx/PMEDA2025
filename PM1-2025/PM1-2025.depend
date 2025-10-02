@@ -30,7 +30,7 @@
 	"string.h"
 	"stdio.h"
 
-1758501787 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
+1759438266 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
 	"LSO.h"
 	"LIBT.h"
 	"ABB.h"
@@ -43,7 +43,7 @@
 	"string.h"
 	"stdio.h"
 
-1759005067 c:\users\administrator\documents\github\pmeda2025\pm1-2025\abb.h
+1759438303 c:\users\administrator\documents\github\pmeda2025\pm1-2025\abb.h
 	"LSO.h"
 	<stdlib.h>
 
@@ -51,8 +51,7 @@
 	"LSO.h"
 	<stdlib.h>
 
-1759436797 c:\users\administrator\documents\github\pmeda2025\pm1-2025\libt.h
-	<math.h>
+1759438420 c:\users\administrator\documents\github\pmeda2025\pm1-2025\libt.h
 	"LSO.h"
 	<stdlib.h>
 
