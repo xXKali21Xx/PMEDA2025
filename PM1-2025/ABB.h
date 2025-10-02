@@ -88,7 +88,6 @@ int BajaABB(arbol *a, Alumno b, float *costo, int *exito){
     nodo *cursor = NULL, *padre = NULL;
     float costoLocal = 0.0;
     localizarABB(a, b.codigo, exito, &costoLocal, &cursor, &padre);
-
     if(!(*exito)){
         *exito = 0; // No encontrado
         return 0;
@@ -134,8 +133,7 @@ int BajaABB(arbol *a, Alumno b, float *costo, int *exito){
         while(sucesor->Derecha != NULL){
             padreSucesor = sucesor;
             sucesor = sucesor->Derecha;
-            *costo += 1.0;
-        }
+        }*costo += 1.0;
         cursor->dato = sucesor->dato;
         if(padreSucesor == cursor){
             padreSucesor->izquierda = sucesor->izquierda;
