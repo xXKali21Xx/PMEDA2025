@@ -1,6 +1,5 @@
 #ifndef LIBT_H_INCLUDED
 #define LIBT_H_INCLUDED
-#include <math.h>
 #include "LSO.h"
 #include <stdlib.h>
 
@@ -10,17 +9,18 @@ typedef struct
     int ultimo;
 } LIBT;
 
+
 int localizarLIBT(LIBT lista[], char codigo[], int *exito, float *costo, int cant, int *pos){
     int li = 0, ls = cant - 1;
     int t;
 
-    if (cant == 0){
+    if (cant == 0){ //lista vacia
         (*exito) = -1;
         (*pos) = 0;
         return -1;
     }
 
-    t = (li + ls) / 2;
+    t = (li + ls+1) / 2;
 
     while((li <= ls) && strcmpi(lista->alumnoslibt[t]->codigo, codigo) != 0){
         if(strcmpi(lista->alumnoslibt[t]->codigo, codigo) < 0){
@@ -29,10 +29,10 @@ int localizarLIBT(LIBT lista[], char codigo[], int *exito, float *costo, int can
             ls = t - 1;
         }
         (*costo) += 2;
-        t = (li + ls) / 2;
+        t = (li + ls+1) / 2;
     }
 
-    if (li <= ls){
+    if(li <= ls ){
         (*exito) = 1;
         (*pos) = t;
         (*costo) += 2;
@@ -43,6 +43,7 @@ int localizarLIBT(LIBT lista[], char codigo[], int *exito, float *costo, int can
         return (*exito);
     }
 }
+
 
 int AltaLI(LIBT *lista, Alumno x, int *cant, int *exito, float *costo){
     int pos = 0;
@@ -92,7 +93,7 @@ int BajaLI(LIBT *lista, Alumno x, int *cant, int *exito, float *costo){
         *exito = 2; // Elemento no encontrado
         return 2;
     } else {
-        // Confirmacion por codigo comparando toda la tupla
+        // Confirmaci�n por c�digo comparando toda la tupla
         if(strcmpi(lista->alumnoslibt[pos]->nombre, x.nombre) == 0 &&
            strcmpi(lista->alumnoslibt[pos]->mail, x.mail) == 0 &&
            strcmpi(lista->alumnoslibt[pos]->condicion, x.condicion) == 0 &&
