@@ -30,10 +30,10 @@
 	"string.h"
 	"stdio.h"
 
-1760313457 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
-	"RAL.h"
-	"RAC.h"
-	"RS.h"
+1759440651 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
+	"LSO.h"
+	"LIBT.h"
+	"ABB.h"
 	"Comparaciones.h"
 	<stdio.h>
 	<stdlib.h>
@@ -61,16 +61,28 @@
 
 1758487709 c:\users\kali\desktop\pmeda2025\pmeda2025\pm1-2025\comparaciones.h
 
-1760313440 c:\users\administrator\documents\github\pmeda2025\pm1-2025\comparaciones.h
+1759295484 c:\users\administrator\documents\github\pmeda2025\pm1-2025\comparaciones.h
 
-1760230374 c:\users\administrator\documents\github\pmeda2025\pm1-2025\ral.h
+1759440651 source:c:\users\administrator\documents\github\pmeda2025\rp2-grupo52\pm1-2025\main.c
 	"LSO.h"
+	"LIBT.h"
+	"ABB.h"
+	"Comparaciones.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 
-1760311569 c:\users\administrator\documents\github\pmeda2025\pm1-2025\rac.h
-	"RAL.h"
-	"LSO.h"
+1759004979 c:\users\administrator\documents\github\pmeda2025\rp2-grupo52\pm1-2025\lso.h
+	"string.h"
+	"stdio.h"
 
-1760313389 c:\users\administrator\documents\github\pmeda2025\pm1-2025\rs.h
+1759438420 c:\users\administrator\documents\github\pmeda2025\rp2-grupo52\pm1-2025\libt.h
 	"LSO.h"
-	"RAL.h"
+	<stdlib.h>
+
+1759440543 c:\users\administrator\documents\github\pmeda2025\rp2-grupo52\pm1-2025\abb.h
+	"LSO.h"
+	<stdlib.h>
+
+1759295484 c:\users\administrator\documents\github\pmeda2025\rp2-grupo52\pm1-2025\comparaciones.h
 

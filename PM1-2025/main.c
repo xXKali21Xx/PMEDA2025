@@ -1,62 +1,52 @@
 /*
-  Conclusion del Analisis de Rendimiento:
+    Conclusion del Analisis de Rendimiento:
 
-  ABB (Ganador): Es la más eficiente en todos los aspectos. Su costo de alta es mínimo (0.50)
-  al no requerir corrimientos. La baja y la búsqueda son muy eficientes gracias a su
-  complejidad logarítmica O(log n).
+    RS (Ganador): Es la estructura más eficiente en esta comparación de estructuras. En búsquedas muestra un rendimiento superior, ya que solo
+    recorre listas enlazadas cortas en lugar de sondear un arreglo completo. Al evitar el clustering propio del direccionamiento abierto,
+    mantiene costos promedio y máximos bajos y estables, incluso con factores de carga mayores a 1.
 
-  LIBT (Intermedio): Representa una mejora clara respecto a la LSO gracias a su búsqueda
-  binaria O(log n), pero su rendimiento en altas y bajas se ven afectadas por el costo
-  de corrimiento de punteros.
+    RAC (Intermedio): Mejora notablemente respecto a RAL gracias al sondeo cuadrático, que reduce el agrupamiento primario y
+    evita largas secuencias de celdas ocupadas. Sin embargo, no es efectivo al agrupamiento secundario, y
+    su rendimiento se degrada más que el de RS a medida que aumenta el factor de carga.
 
-  LSO (Menos eficiente): Es la estructura con el peor rendimiento debido a
-  su búsqueda secuencial O(n) y el alto costo de desplazar registros
-  completos en cada operación del alta o baja.
+    RAL (Menor eficiencia): Es la estructura con peor rendimiento. El sondeo lineal genera agrupamiento primario,
+    formando bloques densos de colisiones que disparan los costos de búsqueda. Las secuencias de sondeo se vuelven extensas,
+    elevando tanto el costo promedio como el máximo, incluso para búsquedas fallidas.
 
-   +-----------------------------------------------------------+
-   |          CUADRO COMPARATIVO DE COSTOS                     |
-   +-----------------------------------------------------------+
-   | ESTRUCTURA           | LSO      | LIBT     | ABB      |   |
-   +-----------------------------------------------------------+
-   | OPERACIONES DE ALTA                                       |
-   +-----------------------------------------------------------+
-   | Costo Maximo         | 91.00    | 45.50    | 0.50     |   |
-   | Costo Promedio       | 23.01    | 11.51    | 0.50     |   |
-   +-----------------------------------------------------------+
-   | OPERACIONES DE BAJA                                       |
-   +-----------------------------------------------------------+
-   | Costo Maximo         | 91.00    | 45.50    | 1.50     |   |
-   | Costo Promedio       | 22.38    | 11.19    | 0.98     |   |
-   +-----------------------------------------------------------+
-   | BUSQUEDAS EXITOSAS (EVOEX)                                |
-   +----------------------+----------+----------+--------------+
-   | Costo Maximo         | 100.00   | 14.00    | 12.00    |   |
-   | Costo Promedio       | 45.13    | 11.18    | 6.43     |   |
-   +-----------------------------------------------------------+
-   | BUSQUEDAS FALLIDAS (EVONOEX)                              |
-   +-----------------------------------------------------------+
-   | Costo Maximo         | 71.00    | 14.00    | 11.00    |   |
-   | Costo Promedio       | 24.18    | 10.32    | 5.85     |   |
-   +-----------------------------------------------------------+
-   | Alumnos Finales      | 71       | 71       | 71       |   |
-   +-----------------------------------------------------------+
+    +------------------------------------+-----------+-----------+-----------+
+    |        CUADRO COMPARATIVO DE COSTOS DE LA EVOCACION                    |
+    +------------------------------------+-----------+-----------+-----------+
+    | ESTRUCTURA                         | RAL       | RAC       | RS        |
+    +------------------------------------+-----------+-----------+-----------+
+    | BUSQUEDAS EXITOSAS                                                     |
+    +------------------------------------+-----------+-----------+-----------+
+    | Costo Maximo                       | 81.00     | 11.00     | 6.00      |
+    | Costo Promedio                     | 16.47     | 3.77      | 2.74      |
+    +------------------------------------+-----------+-----------+-----------+
+    | BUSQUEDAS FALLIDAS                                                     |
+    +------------------------------------+-----------+-----------+-----------+
+    | Costo Maximo                       | 94.00     | 12.00     | 4.00      |
+    | Costo Promedio                     | 70.31     | 9.06      | 1.79      |
+    +------------------------------------+-----------+-----------+-----------+
  */
-#include "LSO.h"
-#include "LIBT.h"
-#include "ABB.h"
+#include "RAL.h"
+#include "RAC.h"
+#include "RS.h"
 #include "Comparaciones.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int main() {
-    Alumno lso[130];
-    LIBT libt;
-    arbol abb;
-    int cantLSO = 0, cantLIBT = 0, cantABB = 0;
-    Costos costoLSO, costoLIBT, costoABB;
+    rebalse estructuraRAL;
+    rebalse estructuraRAC;
+    RS estructuraRS[maxRAL];
 
-    init(&abb);
+    Costos costoRAL, costoRAC, costoRS;
+
+    iniRAL(&estructuraRAL);
+    iniRAC(&estructuraRAC);
+    initRS(estructuraRS);
 
     int opcion;
     do {
@@ -70,19 +60,18 @@ int main() {
         printf("Ingrese su opcion: ");
         scanf("%d", &opcion);
         getchar();
-
         switch (opcion) {
             case 1:
-                compararEstructuras(lso, &cantLSO, &costoLSO, &libt, &cantLIBT, &costoLIBT, &abb, &cantABB, &costoABB);
-                mostrarResultados(cantLSO, cantLIBT, cantABB, costoLSO, costoLIBT, costoABB);
+                ComparacionEstruct(&estructuraRAL, &estructuraRAC, estructuraRS,&costoRAL, &costoRAC, &costoRS);
+                mostrarResultados(costoRAL, costoRAC, costoRS);
                 break;
             case 2:
-                printf("\n----- Contenido LSO -----\n");
-                muestralso(lso, cantLSO);
-                printf("\n----- Contenido LIBT -----\n");
-                muestralibt(&libt, cantLIBT);
-                printf("\n----- Contenido ABB  -----\n");
-                muestraABB(&abb);
+                printf("\n---- Contenido Rebalse Abierto Lineal ----\n");
+                muestraRAL(estructuraRAL);
+                printf("\n---- Contenido Rebalse Abierto Cuadratico ----\n");
+                muestraRAC(estructuraRAC);
+                printf("\n----- Contenido Rebalse Separado ----\n");
+                muestraRS(estructuraRS);
                 break;
             case 3:
                 printf("Usted a Cerrado el Programa\n");
@@ -90,48 +79,9 @@ int main() {
             default:
                 printf("\nError: Opcion no valida. Intentelo de Nuevo\n");
         }
-    } while (opcion != 3);
+    } while (opcion != 0);
 
     return 0;
-}
-
-void compararEstructuras(
-    Alumno lso[], int *cantLSO, Costos *costoLSO,
-    LIBT *libt, int *cantLIBT, Costos *costoLIBT,
-    arbol *abb, int *cantABB, Costos *costoABB) {
-
-    Inicializar(cantLSO, costoLSO, libt, cantLIBT, costoLIBT, abb, cantABB, costoABB);
-
-    FILE *fp = fopen("Operaciones-Alumnos.txt", "r");
-    if (fp == NULL) {
-        printf("Error: No se pudo abrir 'Operaciones-Alumnos.txt'\n");
-        return;
-    }
-
-    int operacion;
-    Alumno alumnoTemp;
-    char codigoBuffer[8];
-
-    while (fscanf(fp, "%d\n", &operacion) == 1) {
-        switch (operacion) {
-            case 1: // Alta
-                fscanf(fp, "%[^\n]\n%[^\n]\n%[^\n]\n%d\n%[^\n]\n",
-                       alumnoTemp.codigo, alumnoTemp.nombre, alumnoTemp.mail, &alumnoTemp.nota, alumnoTemp.condicion);
-                procesarAlta(alumnoTemp, lso, cantLSO, costoLSO, libt, cantLIBT, costoLIBT, abb, cantABB, costoABB);
-                break;
-            case 2: // Baja
-                fscanf(fp, "%[^\n]\n%[^\n]\n%[^\n]\n%d\n%[^\n]\n",
-                       alumnoTemp.codigo, alumnoTemp.nombre, alumnoTemp.mail, &alumnoTemp.nota, alumnoTemp.condicion);
-                procesarBaja(alumnoTemp, lso, cantLSO, costoLSO, libt, cantLIBT, costoLIBT, abb, costoABB);
-                break;
-            case 3: // Evocación
-                fscanf(fp, "%[^\n]\n", codigoBuffer);
-                procesarEvocacion(codigoBuffer, lso, *cantLSO, costoLSO, libt, *cantLIBT, costoLIBT, abb, costoABB);
-                break;
-        }
-    }
-    fclose(fp);
-    printf("Archivo Procesado\n");
 }
 
 
