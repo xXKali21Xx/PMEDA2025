@@ -1,5 +1,6 @@
 #ifndef RAL_H_INCLUDED
 #define RAL_H_INCLUDED
+#include <ctype.h>
 #include "LSO.h"
 #define maxRAL 174
 
@@ -33,6 +34,9 @@ void iniRAL(rebalse *ral){
 }
 
 int localizarRAL(char* codigo, rebalse ral, int *exito, float *costo, int *pos) {
+    for(int z = 0; codigo[z] != '\0'; z++){
+        codigo[z] = toupper(codigo[z]);
+    }
     int i = hashing(codigo, maxRAL);
     int j = 0;
     int primeraLibre = -1;

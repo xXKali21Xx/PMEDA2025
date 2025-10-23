@@ -1,6 +1,7 @@
 #ifndef RAC_H_INCLUDED
 #define RAC_H_INCLUDED
-#define maxRAC 161
+#define maxRAC 163
+#include <ctype.h>
 #include "RAL.h"
 #include "LSO.h"
 
@@ -12,43 +13,52 @@ void iniRAC(rebalse *rac) {
 }
 
 int localizarRAC(char* codigo, rebalse rac, int *pos, float *costo, int *exito) {
-    int h = hashing(codigo, maxRAC);
+    for(int z = 0; codigo[z] != '\0'; z++){
+        codigo[z] = toupper(codigo[z]);
+    }
+    int i = hashing(codigo, maxRAC);
     int j = 0;
-    int primeraLibre = -1; // Almacena la posición de la primera celda LIBRE
-    int i;
+    int primeraLibre = -1;
 
     *exito = 0;
     *costo = 0;
-    while(j < maxRAC){
-        i = (h + j * j) % maxRAC;
-        (*costo)++;
 
-        if (rac.arreglo[i].estado == 3 && strcmpi(rac.arreglo[i].alumno.codigo, codigo) == 0) {
-            *exito = 1;
-            *pos = i;
-            return 1;
+    for (int k = 0; k < maxRAC; k++) {
+
+        if (k > 0) {
+            j++;
+            i = (i + j) % maxRAC;
+        }
+
+        *costo = *costo + 1;
+
+        if (rac.arreglo[i].estado == 3) {
+            if (strcmp(rac.arreglo[i].alumno.codigo, codigo) == 0) {
+                *exito = 1;
+                *pos = i;
+                return 1;
+            }
         }
 
         if (rac.arreglo[i].estado == 2 && primeraLibre == -1) {
-            primeraLibre = i;
+                primeraLibre = i;
         }
 
         if (rac.arreglo[i].estado == 1) {
             if (primeraLibre != -1) {
-                *pos = primeraLibre; // Usar la primera libre
+                *pos = primeraLibre;
             } else {
                 *pos = i;
             }
             return 0;
         }
-
-        j++;
     }
 
     if (primeraLibre != -1) {
         *pos = primeraLibre;
+    } else {
+        *pos = -1;
     }
-
     return 0;
 }
 

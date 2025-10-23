@@ -77,6 +77,7 @@ int AltaLI(LIBT *lista, Alumno x, int *cant, int *exito, float *costo){
         lista->alumnoslibt[pos] = nuevo;
         lista->ultimo = *cant;
         (*exito) = 1;
+        (*costo) += 0.5;
         (*cant)++;
         return 1;
     }

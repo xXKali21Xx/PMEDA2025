@@ -1,5 +1,6 @@
 #ifndef RS_H_INCLUDED
 #define RS_H_INCLUDED
+#include <ctype.h>
 #include "LSO.h"
 #include "RAL.h"
 #define maxRS 85
@@ -25,6 +26,9 @@ void initRS(RS *rs){
 	}
 }
 int localizarRS(RS rs[], char codigo[], int *exito, float *costo, NodoRS **pos) {
+    for(int z = 0; codigo[z] != '\0'; z++){
+        codigo[z] = toupper(codigo[z]);
+    }
     int i = hashing(codigo, maxRS);
     NodoRS *actual = rs[i].acc;
     *exito = 0;

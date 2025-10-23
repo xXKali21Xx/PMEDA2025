@@ -30,7 +30,7 @@
 	"string.h"
 	"stdio.h"
 
-1760313457 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
+1760313707 source:c:\users\administrator\documents\github\pmeda2025\pm1-2025\main.c
 	"RAL.h"
 	"RAC.h"
 	"RS.h"
@@ -63,14 +63,17 @@
 
 1760313440 c:\users\administrator\documents\github\pmeda2025\pm1-2025\comparaciones.h
 
-1760230374 c:\users\administrator\documents\github\pmeda2025\pm1-2025\ral.h
+1760805767 c:\users\administrator\documents\github\pmeda2025\pm1-2025\ral.h
+	<ctype.h>
 	"LSO.h"
 
-1760311569 c:\users\administrator\documents\github\pmeda2025\pm1-2025\rac.h
+1761183554 c:\users\administrator\documents\github\pmeda2025\pm1-2025\rac.h
+	<ctype.h>
 	"RAL.h"
 	"LSO.h"
 
-1760313389 c:\users\administrator\documents\github\pmeda2025\pm1-2025\rs.h
+1760805798 c:\users\administrator\documents\github\pmeda2025\pm1-2025\rs.h
+	<ctype.h>
 	"LSO.h"
 	"RAL.h"
 
