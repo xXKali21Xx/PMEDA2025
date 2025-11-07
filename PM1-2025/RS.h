@@ -1,9 +1,10 @@
 #ifndef RS_H_INCLUDED
 #define RS_H_INCLUDED
+#include <ctype.h>
 #include "LSO.h"
 #include "RAL.h"
 #define maxRS 85
-typedef struct NodoRS{
+typedef struct{
     Alumno elem;
     struct NodoRS *sig;
 }NodoRS;
@@ -24,35 +25,35 @@ void initRS(RS *rs){
         rs[i].cant = 0;
 	}
 }
-int localizarRS(RS rs[], char codigo[], int *exito, float *costo, int *pos) {
+int localizarRS(RS rs[], char codigo[], int *exito, float *costo, NodoRS **pos) {
+    for(int z = 0; codigo[z] != '\0'; z++){
+        codigo[z] = toupper(codigo[z]);
+    }
     int i = hashing(codigo, maxRS);
-    *pos = i;
+    NodoRS *actual = rs[i].acc;
     *exito = 0;
-    *costo = 1.0;
-    rs[i].aux = NULL;
-    rs[i].cursor = rs[i].acc;
-
-    while (rs[i].cursor != NULL) {
+    *costo = 1;
+    while (actual != NULL) {
         *costo = *costo + 1;
-        if (strcmpi(rs[i].cursor->elem.codigo, codigo) == 0) {
+        if (strcmpi(actual->elem.codigo, codigo) == 0) {
             *exito = 1;
+            *pos = actual;
             return 1;
         }
-
-        rs[i].aux = rs[i].cursor;
-        rs[i].cursor = rs[i].cursor->sig;
+        actual = actual->sig;
     }
-    *exito = 0;
+    *pos = NULL;
     return 0;
 }
 
 int AltaRS(RS rs[], Alumno alu, int *exito, float *costo) {
-    //int i = hashing(alu.codigo, maxRS);
-    int pos;
+    int i = hashing(alu.codigo, maxRS);
+    NodoRS *pos = NULL;
+
     localizarRS(rs, alu.codigo, exito, costo, &pos);
     if (*exito == 1) {
         *exito = 0;
-        return *exito;
+        return 0;
     }
 
     NodoRS *nuevo = (NodoRS *)malloc(sizeof(NodoRS));
@@ -62,9 +63,9 @@ int AltaRS(RS rs[], Alumno alu, int *exito, float *costo) {
     }
 
     nuevo->elem = alu;
-    nuevo->sig = rs[pos].acc;
-    rs[pos].acc = nuevo;
-    rs[pos].cant++;
+    nuevo->sig = rs[i].acc;
+    rs[i].acc = nuevo;
+    rs[i].cant++;
 
     *exito = 1;
     return 1;
@@ -101,34 +102,34 @@ int comparacionRS(Alumno a1, Alumno a2) {
 }
 
 int BajaRS(RS rs[], Alumno alu, int *exito) {
-    float costo = 0.0;
-    int pos;
-    localizarRS(rs, alu.codigo, exito, &costo, &pos);
-
-    if (*exito == 0) {
-        return 0;
-    }
-    if (comparacionRS(rs[pos].cursor->elem, alu)) {
-        NodoRS* nodo_a_borrar = rs[pos].cursor;
-        if (rs[pos].aux == NULL) {
-            rs[pos].acc = nodo_a_borrar->sig;
-        } else {
-            rs[pos].aux->sig = nodo_a_borrar->sig;
-        }
-        free(nodo_a_borrar);
-        rs[pos].cant--;
-        *exito = 1;
-        return 1;
-    }
+    int i = hashing(alu.codigo, maxRS);
+    NodoRS *actual = rs[i].acc;
+    NodoRS *anterior = NULL;
     *exito = 0;
+
+    while (actual != NULL) {
+        if (comparacionRS(actual->elem, alu)) {
+            if (anterior == NULL) {
+                rs[i].acc = actual->sig;
+            } else {
+                anterior->sig = actual->sig;
+            }
+            free(actual);
+            rs[i].cant--;
+            *exito = 1;
+            return 1;
+        }
+        anterior = actual;
+        actual = actual->sig;
+    }
     return 0;
 }
 
 int EvocarRS(RS rs[], char codigo[], Alumno *alu, int *exito, float *costo) {
-    int pos;
+    NodoRS *pos = NULL;
     localizarRS(rs, codigo, exito, costo, &pos);
     if (*exito == 1) {
-        *alu = rs[pos].cursor->elem;
+        *alu = pos->elem;
         return 1;
     }
     return 0;
