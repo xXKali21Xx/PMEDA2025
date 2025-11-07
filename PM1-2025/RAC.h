@@ -3,6 +3,7 @@
 #define maxRAC 161
 #include "RAL.h"
 #include "LSO.h"
+#include <stdlib.h>
 
 void iniRAC(rebalse *rac) {
     rac->cantidad = 0;
@@ -18,11 +19,13 @@ int localizarRAC(char* codigo, rebalse rac, int *pos, float *costo, int *exito) 
     int i;
 
     *exito = 0;
-    *costo = 0;
+    *costo = 0.0;
     while(j < maxRAC){
         i = (h + j * j) % maxRAC;
         (*costo)++;
-
+        if(rac.cantidad == 0 ){
+            return -1;
+        }
         if (rac.arreglo[i].estado == 3 && strcmpi(rac.arreglo[i].alumno.codigo, codigo) == 0) {
             *exito = 1;
             *pos = i;

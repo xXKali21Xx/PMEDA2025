@@ -41,7 +41,7 @@ int localizarRAL(char* codigo, rebalse ral, int *exito, float *costo, int *pos) 
     *costo = 0;
     while(j < maxRAL){
         *costo = *costo + 1;
-
+        i = (i + 1) % maxRAL;
         if(ral.arreglo[i].estado == 3 && strcmpi(ral.arreglo[i].alumno.codigo, codigo) == 0){
             *exito = 1;
             *pos = i;
@@ -61,7 +61,7 @@ int localizarRAL(char* codigo, rebalse ral, int *exito, float *costo, int *pos) 
             return 0;
         }
 
-        i = (i + 1) % maxRAL;
+
         j++;
     }
 

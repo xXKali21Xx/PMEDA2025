@@ -74,3 +74,30 @@
 	"LSO.h"
 	"RAL.h"
 
+1762485307 source:c:\users\kali\desktop\pmeda2025\pm1-2025\main.c
+	"RAL.h"
+	"RAC.h"
+	"RS.h"
+	"Comparaciones.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1762485740 c:\users\kali\desktop\pmeda2025\pm1-2025\ral.h
+	"LSO.h"
+
+1759177461 c:\users\kali\desktop\pmeda2025\pm1-2025\lso.h
+	"string.h"
+	"stdio.h"
+
+1762485696 c:\users\kali\desktop\pmeda2025\pm1-2025\rac.h
+	"RAL.h"
+	"LSO.h"
+	<stdlib.h>
+
+1762484729 c:\users\kali\desktop\pmeda2025\pm1-2025\rs.h
+	"LSO.h"
+	"RAL.h"
+
+1762484642 c:\users\kali\desktop\pmeda2025\pm1-2025\comparaciones.h
+
