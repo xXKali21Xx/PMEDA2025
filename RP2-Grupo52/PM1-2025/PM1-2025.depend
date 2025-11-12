@@ -86,3 +86,26 @@
 
 1759295484 c:\users\administrator\documents\github\pmeda2025\rp2-grupo52\pm1-2025\comparaciones.h
 
+1760986934 source:c:\users\kali\desktop\pmeda2025\rp2-grupo52\pm1-2025\main.c
+	"LSO.h"
+	"LIBT.h"
+	"ABB.h"
+	"Comparaciones.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1760986934 c:\users\kali\desktop\pmeda2025\rp2-grupo52\pm1-2025\lso.h
+	"string.h"
+	"stdio.h"
+
+1760986934 c:\users\kali\desktop\pmeda2025\rp2-grupo52\pm1-2025\libt.h
+	"LSO.h"
+	<stdlib.h>
+
+1760986934 c:\users\kali\desktop\pmeda2025\rp2-grupo52\pm1-2025\abb.h
+	"LSO.h"
+	<stdlib.h>
+
+1760986934 c:\users\kali\desktop\pmeda2025\rp2-grupo52\pm1-2025\comparaciones.h
+
