@@ -144,7 +144,7 @@ void muestraRAC(rebalse rac) {
         }
 
         if ((i + 1) % 5 == 0 && i + 1 < maxRAC) {
-            system("PAUSE");
+            system("pause");
         }
     }
 }

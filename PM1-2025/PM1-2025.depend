@@ -1,10 +1,14 @@
 # depslib dependency file v1.0
-1756820137 source:c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\main.c
+1760986934 source:c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\main.c
+	"RAL.h"
+	"RAC.h"
+	"RS.h"
+	"Comparaciones.h"
 	<stdio.h>
 	<stdlib.h>
-	"LSO.h"
+	<string.h>
 
-1756825463 c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\lso.h
+1759177461 c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\lso.h
 	"string.h"
 	"stdio.h"
 
@@ -76,4 +80,20 @@
 	<ctype.h>
 	"LSO.h"
 	"RAL.h"
+
+1761265472 c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\ral.h
+	<ctype.h>
+	"LSO.h"
+
+1761265830 c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\rac.h
+	<ctype.h>
+	"RAL.h"
+	"LSO.h"
+
+1761265472 c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\rs.h
+	<ctype.h>
+	"LSO.h"
+	"RAL.h"
+
+1761265660 c:\users\alber\onedrive\escritorio\pmeda2025\pm1-2025\comparaciones.h
 

@@ -29,7 +29,7 @@ void ComparacionEstruct(rebalse *ral, rebalse *rac, RS rs[],
     inicializarCostos(costoRAC);
     inicializarCostos(costoRS);
 
-    FILE *fp = fopen("Operaciones-Alumnos.txt", "r");
+    FILE *fp = fopen("Operaciones-Alumno.txt", "r");
     if (fp == NULL) {
         perror("Error al abrir el archivo 'Operaciones-Alumnos.txt'");
         return;
@@ -66,7 +66,7 @@ void ComparacionEstruct(rebalse *ral, rebalse *rac, RS rs[],
                 BajaRS(rs, aux, &exito);
                 break;
 
-            case 3: // Evocación
+            case 3: // Evocaciï¿½n
                 fscanf(fp, " %[^\n]", aux.codigo);
 
                 Alumno aluEvocada;
